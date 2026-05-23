@@ -1,0 +1,9 @@
+[
+  {
+    "id": "ppt-agent",
+    "name": "PPT Agent",
+    "description": "状态机驱动的多代理协作 PPT 生成框架 — 合同式约束、模板化 Prompt 引擎、质量门禁系统",
+    "hasSource": true,
+    "sourceMode": "bundled"
+  }
+]

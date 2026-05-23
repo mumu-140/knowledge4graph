@@ -1,0 +1,11 @@
+{
+  "name": "knowledge4graph",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter @knowledge4graph/dashboard dev",
+    "build": "pnpm --filter @knowledge4graph/dashboard build",
+    "preview": "pnpm --filter @knowledge4graph/dashboard preview"
+  }
+}

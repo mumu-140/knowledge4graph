@@ -1,0 +1,4366 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "PPT Agent",
+    "languages": [
+      "Python",
+      "Markdown",
+      "JavaScript"
+    ],
+    "frameworks": [],
+    "description": "State-machine-driven multi-agent collaborative presentation generation framework",
+    "analyzedAt": "2026-05-23T10:08:00.934994Z",
+    "gitCommitHash": ""
+  },
+  "nodes": [
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "PPT Agent 项目的中文主文档，介绍了基于状态机的多 Agent 演示文稿全自动生成框架的核心亮点、7 阶段工作流与产物链。",
+      "tags": [
+        "documentation",
+        "entry-point",
+        "overview",
+        "workflow",
+        "ppt-agent"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:README_EN.md",
+      "type": "document",
+      "name": "README_EN.md",
+      "filePath": "README_EN.md",
+      "summary": "PPT Agent 项目的英文主文档，与中文 README 对应，面向国际用户介绍框架的设计哲学、完整流水线与双引擎 PPTX 导出能力。",
+      "tags": [
+        "documentation",
+        "entry-point",
+        "english",
+        "pipeline",
+        "export"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:SKILL.md",
+      "type": "document",
+      "name": "SKILL.md",
+      "filePath": "SKILL.md",
+      "summary": "PPT Agent 的主控制台合同文档，定义了状态机驱动的多 Agent 调度骨架、Gate 校验规则、Subagent 生命周期管理与跨对话断点恢复协议。",
+      "tags": [
+        "skill",
+        "state-machine",
+        "agent-orchestration",
+        "gate",
+        "contract"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:references/README.md",
+      "type": "document",
+      "name": "references/README.md",
+      "filePath": "references/README.md",
+      "summary": "references 目录的索引文档，说明各子目录（playbooks、prompts、layouts、blocks、charts、styles 等）的资源结构与消费规则，以及 resource_loader.py 的字段路由机制。",
+      "tags": [
+        "references",
+        "resources",
+        "prompt-templates",
+        "resource-routing",
+        "index"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:scripts/README.md",
+      "type": "document",
+      "name": "scripts/README.md",
+      "filePath": "scripts/README.md",
+      "summary": "scripts 目录的索引文档，列出所有执行脚本的用途、调用方和依赖关系，包括核心调度、校验工具、导出工具和辅助脚本。",
+      "tags": [
+        "scripts",
+        "index",
+        "tools",
+        "dependencies",
+        "documentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/check_skill.py",
+      "type": "file",
+      "name": "check_skill.py",
+      "filePath": "scripts/check_skill.py",
+      "summary": "Skill 一致性检查工具，自动检测 markdown、prompt 模板、validator 与资源之间的协议漂移，在维护期运行以保证架构文档不失同步。",
+      "tags": [
+        "validation",
+        "consistency-check",
+        "maintenance",
+        "cli",
+        "automation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:scripts/contract_validator.py",
+      "type": "file",
+      "name": "contract_validator.py",
+      "filePath": "scripts/contract_validator.py",
+      "summary": "v4 工作流合同校验器，支持 interview-qa、requirements-interview、search-brief、outline、style、planning images、delivery-manifest 等全链路产物的格式与字段合规性验证。",
+      "tags": [
+        "validation",
+        "contract",
+        "gate",
+        "workflow",
+        "cli"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:scripts/html2png.py",
+      "type": "file",
+      "name": "html2png.py",
+      "filePath": "scripts/html2png.py",
+      "summary": "HTML 转 PNG 高清截图工具，使用 Puppeteer headless 浏览器，内置字体与图片智能等候钩子，输出 2560x1440 像素的幻灯片截图。",
+      "tags": [
+        "export",
+        "html-to-png",
+        "puppeteer",
+        "screenshot",
+        "rendering"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/html2svg.py",
+      "type": "file",
+      "name": "html2svg.py",
+      "filePath": "scripts/html2svg.py",
+      "summary": "HTML 转真矢量 SVG 工具，使用 Puppeteer + dom-to-svg 保留可编辑文字元素，并提供 PNG 包裹 SVG 与 PDF 转换的降级方案。",
+      "tags": [
+        "export",
+        "html-to-svg",
+        "puppeteer",
+        "vector",
+        "rendering"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:scripts/html_packager.py",
+      "type": "file",
+      "name": "html_packager.py",
+      "filePath": "scripts/html_packager.py",
+      "summary": "多页 HTML 合并为单文件可翻页预览工具，将各页 HTML 放入独立 iframe srcdoc，提供键盘导航交互。",
+      "tags": [
+        "export",
+        "preview",
+        "html",
+        "packaging",
+        "cli"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/milestone_check.py",
+      "type": "file",
+      "name": "milestone_check.py",
+      "filePath": "scripts/milestone_check.py",
+      "summary": "流水线里程碑验收工具，按阶段（P0–P5）检查对应产物文件是否存在且通过 contract/planning validator，支持断点恢复场景的快速侦查。",
+      "tags": [
+        "validation",
+        "milestone",
+        "recovery",
+        "pipeline",
+        "cli"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:scripts/planning_validator.py",
+      "type": "file",
+      "name": "planning_validator.py",
+      "filePath": "scripts/planning_validator.py",
+      "summary": "Step 4 页面规划 JSON 的 Schema 校验器，是 density_label、density_contract、card_type 等枚举值与字段约束的唯一真源，供 Subagent 自审和主 Agent Gate 复检。",
+      "tags": [
+        "validation",
+        "planning",
+        "schema",
+        "gate",
+        "density-contract"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:scripts/png2pptx.py",
+      "type": "file",
+      "name": "png2pptx.py",
+      "filePath": "scripts/png2pptx.py",
+      "summary": "PNG 截图转 PPTX 导出工具，将每张全屏 PNG 嵌入 16:9 幻灯片，生成跨平台兼容的光栅 PPTX 文件。",
+      "tags": [
+        "export",
+        "pptx",
+        "png",
+        "presentation",
+        "cli"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/prompt_harness.py",
+      "type": "file",
+      "name": "prompt_harness.py",
+      "filePath": "scripts/prompt_harness.py",
+      "summary": "Prompt 模板变量填充工具，将 {{VAR}} 占位符替换为实际值并输出可直接使用的 Subagent prompt 文件，是所有 Subagent prompt 生成的唯一入口。",
+      "tags": [
+        "prompt-generation",
+        "template",
+        "harness",
+        "subagent",
+        "cli"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/resource_loader.py",
+      "type": "file",
+      "name": "resource_loader.py",
+      "filePath": "scripts/resource_loader.py",
+      "summary": "资源路由器，提供 menu（提取标题+引用层菜单）、resolve（按 planning JSON 字段动态加载资源正文）和 images（枚举本地图片资产）三种模式，驱动 planning 与 HTML 阶段的资源消费。",
+      "tags": [
+        "resource-routing",
+        "menu",
+        "resolve",
+        "planning",
+        "references"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:scripts/smoke_skill.py",
+      "type": "file",
+      "name": "smoke_skill.py",
+      "filePath": "scripts/smoke_skill.py",
+      "summary": "端到端最小冒烟测试脚本，覆盖 Step 0 双模板裁剪、Step 3 三种 density_bias 大纲合同、Step 4 五档 density_label、visual_qa 双层断言、resource_loader 和 prompt_harness 的主链集成。",
+      "tags": [
+        "smoke-test",
+        "end-to-end",
+        "testing",
+        "maintenance",
+        "integration"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:scripts/subagent_logger.py",
+      "type": "file",
+      "name": "subagent_logger.py",
+      "filePath": "scripts/subagent_logger.py",
+      "summary": "Subagent 运行日志持久化工具，将 PageAgent / PagePatchAgent 的阶段命令 stdout/stderr 与阶段注记追加写入 runtime 日志，支持断点审计与回放。",
+      "tags": [
+        "logging",
+        "subagent",
+        "audit",
+        "runtime",
+        "cli"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/svg2pptx.py",
+      "type": "file",
+      "name": "svg2pptx.py",
+      "filePath": "scripts/svg2pptx.py",
+      "summary": "SVG 转 PPTX 矢量导出工具，将 SVG 元素解析为原生 OOXML 形状（rect、text、circle、path、gradient 等），保留字体可编辑性。",
+      "tags": [
+        "export",
+        "svg",
+        "pptx",
+        "vector",
+        "ooxml"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:scripts/visual_qa.py",
+      "type": "file",
+      "name": "visual_qa.py",
+      "filePath": "scripts/visual_qa.py",
+      "summary": "自动化视觉质量断言脚本，基于像素分析对 slide PNG 做分辨率、空白率、垂直文字、溢出截断、对比度区域等检测，并结合 planning JSON 和 HTML 进行结构与装饰预算的双层断言。",
+      "tags": [
+        "visual-qa",
+        "pixel-analysis",
+        "assertion",
+        "png",
+        "planning"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:scripts/workflow_versions.py",
+      "type": "file",
+      "name": "workflow_versions.py",
+      "filePath": "scripts/workflow_versions.py",
+      "summary": "工作流与 schema 版本常量的唯一真源，提供 WORKFLOW_VERSION 等常量及构建 workflow_metadata 的辅助函数，被多个 validator 和 smoke 脚本引用。",
+      "tags": [
+        "versioning",
+        "constants",
+        "schema",
+        "metadata",
+        "shared"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:CheckResult",
+      "type": "class",
+      "name": "CheckResult",
+      "filePath": "scripts/check_skill.py",
+      "summary": "check_skill.py 的检查结果容器，收集 errors 和 warnings 列表，提供 ok 属性判断是否通过。",
+      "tags": [
+        "dataclass",
+        "result",
+        "validation",
+        "check"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:HarnessInvocation",
+      "type": "class",
+      "name": "HarnessInvocation",
+      "filePath": "scripts/check_skill.py",
+      "summary": "表示从文档中解析到的一次 prompt_harness.py 调用记录，包含源路径、行号、命令、模板路径和已提供变量集。",
+      "tags": [
+        "dataclass",
+        "harness",
+        "invocation",
+        "parsing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:ValidationResult",
+      "type": "class",
+      "name": "ValidationResult",
+      "filePath": "scripts/contract_validator.py",
+      "summary": "contract_validator.py 的校验结果容器，收集 errors 和 warnings，供 Gate 判断是否放行。",
+      "tags": [
+        "dataclass",
+        "result",
+        "validation",
+        "contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Checker",
+      "type": "class",
+      "name": "Checker",
+      "filePath": "scripts/milestone_check.py",
+      "summary": "里程碑检查器核心类，按阶段顺序调用 contract_validator 和 planning_validator 检查各阶段产物，支持全量或指定阶段的验收。",
+      "tags": [
+        "milestone",
+        "checker",
+        "class",
+        "pipeline",
+        "validation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:ValidationResult_planning",
+      "type": "class",
+      "name": "ValidationResult",
+      "filePath": "scripts/planning_validator.py",
+      "summary": "planning_validator.py 的校验结果容器，与 contract_validator 的同名类结构一致，收集 errors 和 warnings。",
+      "tags": [
+        "dataclass",
+        "result",
+        "planning",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:SmokeResult",
+      "type": "class",
+      "name": "SmokeResult",
+      "filePath": "scripts/smoke_skill.py",
+      "summary": "smoke_skill.py 的测试结果容器，收集 errors、warnings 和 steps，用于汇总冒烟测试运行情况。",
+      "tags": [
+        "dataclass",
+        "result",
+        "smoke-test",
+        "testing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:SvgConverter",
+      "type": "class",
+      "name": "SvgConverter",
+      "filePath": "scripts/svg2pptx.py",
+      "summary": "SVG 到 OOXML 的核心转换器类，解析 SVG 树并递归将 rect、text、circle、path、gradient 等元素转为 python-pptx 原生形状。",
+      "tags": [
+        "converter",
+        "svg",
+        "pptx",
+        "ooxml",
+        "rendering"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:find_prompt_harness_invocations",
+      "type": "function",
+      "name": "find_prompt_harness_invocations",
+      "filePath": "scripts/check_skill.py",
+      "summary": "从文档文件中静态解析所有 prompt_harness.py 调用，提取模板路径和已提供变量键集合，供一致性检查使用。",
+      "tags": [
+        "parsing",
+        "harness",
+        "static-analysis",
+        "check"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:run_all_checks",
+      "type": "function",
+      "name": "run_all_checks",
+      "filePath": "scripts/check_skill.py",
+      "summary": "check_skill.py 的主检查入口，串行执行所有协议一致性子检查，返回汇总的 CheckResult。",
+      "tags": [
+        "entry-point",
+        "check",
+        "orchestration",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:fill_template",
+      "type": "function",
+      "name": "fill_template",
+      "filePath": "scripts/prompt_harness.py",
+      "summary": "将模板文本中所有 {{VAR}} 占位符替换为变量字典中的值，返回填充后文本及未填充变量列表。",
+      "tags": [
+        "template",
+        "variable-substitution",
+        "prompt",
+        "harness"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:validate_page",
+      "type": "function",
+      "name": "validate_page",
+      "filePath": "scripts/planning_validator.py",
+      "summary": "对单页 planning JSON 数据执行完整 Schema 校验，检查 density_contract、card 字段、layout_hint 等所有必填项和枚举合法性。",
+      "tags": [
+        "validation",
+        "planning",
+        "schema",
+        "page",
+        "gate"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:convert",
+      "type": "function",
+      "name": "convert",
+      "filePath": "scripts/html2png.py",
+      "summary": "HTML 转 PNG 的主转换函数，调用 Puppeteer 脚本批量截图，内置字体与图片智能等候逻辑。",
+      "tags": [
+        "conversion",
+        "html",
+        "png",
+        "puppeteer",
+        "rendering"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:build_preview",
+      "type": "function",
+      "name": "build_preview",
+      "filePath": "scripts/html_packager.py",
+      "summary": "将多个幻灯片 HTML 文件打包为单文件可翻页预览，每页用独立 iframe 实现 CSS 完全隔离。",
+      "tags": [
+        "preview",
+        "html",
+        "packaging",
+        "slides",
+        "iframe"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:generate_menu",
+      "type": "function",
+      "name": "generate_menu",
+      "filePath": "scripts/resource_loader.py",
+      "summary": "遍历 references 目录提取所有资源的标题和引用层，生成供 planning 阶段消费的资源菜单文本。",
+      "tags": [
+        "resource-loading",
+        "menu",
+        "planning",
+        "references"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:build_workflow_metadata",
+      "type": "function",
+      "name": "build_workflow_metadata",
+      "filePath": "scripts/workflow_versions.py",
+      "summary": "构建包含当前工作流所有版本常量的 metadata 字典，用于写入 planning JSON 的 workflow_metadata 字段。",
+      "tags": [
+        "versioning",
+        "metadata",
+        "workflow",
+        "constants"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/blocks/README.md",
+      "type": "document",
+      "name": "区域展示组件库总览",
+      "filePath": "references/blocks/README.md",
+      "summary": "PPT Agent 区域展示组件库的索引与选择指南，列出全部区域块组件并说明各类内容场景下的组件选用原则，以及灵动组合的设计思路。",
+      "tags": [
+        "blocks",
+        "组件总览",
+        "选择指南",
+        "ppt设计语言",
+        "设计规范"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/blocks/card-styles.md",
+      "type": "document",
+      "name": "卡片视觉变体（card_style）",
+      "filePath": "references/blocks/card-styles.md",
+      "summary": "定义 PPT 区域块的 6 种视觉变体（filled、transparent、outline、accent、glass、elevated）的设计哲学与使用规则，并说明与 card_type 的搭配关系。",
+      "tags": [
+        "card-style",
+        "视觉变体",
+        "设计规范",
+        "blocks",
+        "ppt样式"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/blocks/comparison.md",
+      "type": "document",
+      "name": "对比块（comparison）",
+      "filePath": "references/blocks/comparison.md",
+      "summary": "描述 comparison 对比块的 JSON 数据结构与设计灵魂，适合展示两项方案或产品的多维度对比，强调戏剧性视觉张力。",
+      "tags": [
+        "comparison",
+        "对比块",
+        "blocks",
+        "json结构",
+        "设计灵魂"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/blocks/diagram.md",
+      "type": "document",
+      "name": "图解块（diagram）",
+      "filePath": "references/blocks/diagram.md",
+      "summary": "描述 diagram 图解块的 JSON 结构、子类型设计思维及实现指引，用于在幻灯片中呈现流程、关系或结构型信息。",
+      "tags": [
+        "diagram",
+        "图解块",
+        "blocks",
+        "json结构",
+        "流程图"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/blocks/image-hero.md",
+      "type": "document",
+      "name": "大图叠加文字块（image_hero）",
+      "filePath": "references/blocks/image-hero.md",
+      "summary": "定义 image_hero 大图+叠加文字块的数据结构、设计灵魂和实现要点，以图像为主角、文字为浮层，营造沉浸感画面。",
+      "tags": [
+        "image-hero",
+        "大图块",
+        "blocks",
+        "视觉沉浸",
+        "json结构"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/blocks/matrix-chart.md",
+      "type": "document",
+      "name": "象限矩阵块（matrix_chart）",
+      "filePath": "references/blocks/matrix-chart.md",
+      "summary": "描述 matrix_chart 象限矩阵块的 JSON 结构与设计灵魂，利用四象限定位方式直观呈现多维度数据分布关系。",
+      "tags": [
+        "matrix-chart",
+        "象限矩阵",
+        "blocks",
+        "json结构",
+        "四象限"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/blocks/people.md",
+      "type": "document",
+      "name": "人物组块（people）",
+      "filePath": "references/blocks/people.md",
+      "summary": "定义 people 人物组块的 JSON 结构与设计规范，涵盖头像处理、信息层级和人物排列方式，强调面孔的视觉力量。",
+      "tags": [
+        "people",
+        "人物块",
+        "blocks",
+        "头像",
+        "json结构"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/blocks/quote.md",
+      "type": "document",
+      "name": "引用金句块（quote）",
+      "filePath": "references/blocks/quote.md",
+      "summary": "描述 quote 金句块的 JSON 结构与设计灵魂，定义金句的视觉重量、来源信息呈现和灵动表达变奏手法。",
+      "tags": [
+        "quote",
+        "金句块",
+        "blocks",
+        "json结构",
+        "排版设计"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/blocks/timeline.md",
+      "type": "document",
+      "name": "时间线块（timeline）",
+      "filePath": "references/blocks/timeline.md",
+      "summary": "描述 timeline 时间线块的数据格式、横/纵向时间线的灵动表达方式和实现指引，适用于历程与路线图场景。",
+      "tags": [
+        "timeline",
+        "时间线块",
+        "blocks",
+        "json结构",
+        "路线图"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/charts/README.md",
+      "type": "document",
+      "name": "数据可视化图表总览",
+      "filePath": "references/charts/README.md",
+      "summary": "PPT Agent 数据可视化图表参考库的索引，提供按数据特征选择图表类型的决策指南，以及图表与幻灯片整体布局的灵动法则。",
+      "tags": [
+        "charts",
+        "图表总览",
+        "选择指南",
+        "数据可视化",
+        "ppt设计语言"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/charts/comparison-bar.md",
+      "type": "document",
+      "name": "对比柱状图（comparison-bar）",
+      "filePath": "references/charts/comparison-bar.md",
+      "summary": "定义两项对比柱状图的 JSON 骨架结构与灵动设计指引，适合展示同类目的两项数值对比，突出差异。",
+      "tags": [
+        "comparison-bar",
+        "柱状图",
+        "charts",
+        "对比可视化",
+        "json结构"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/charts/funnel.md",
+      "type": "document",
+      "name": "漏斗图（funnel）",
+      "filePath": "references/charts/funnel.md",
+      "summary": "描述漏斗图的结构原理与数据格式，适用于转化流程或分阶段收窄的数据，含关键规则和灵动设计指引。",
+      "tags": [
+        "funnel",
+        "漏斗图",
+        "charts",
+        "转化流程",
+        "数据可视化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/charts/kpi.md",
+      "type": "document",
+      "name": "KPI 指标卡（kpi）",
+      "filePath": "references/charts/kpi.md",
+      "summary": "定义 KPI 指标卡（数字+趋势箭头+标签）的 JSON 骨架、关键规则和灵动设计指引，是呈现核心业务指标的标准组件。",
+      "tags": [
+        "kpi",
+        "指标卡",
+        "charts",
+        "json结构",
+        "数据可视化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/charts/metric-row.md",
+      "type": "document",
+      "name": "指标行（metric-row）",
+      "filePath": "references/charts/metric-row.md",
+      "summary": "描述指标行（数字+标签+进度条组合）的 JSON 骨架与灵动指引，用于一行内紧凑呈现多个关联指标。",
+      "tags": [
+        "metric-row",
+        "指标行",
+        "charts",
+        "json结构",
+        "数据可视化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/charts/progress-bar.md",
+      "type": "document",
+      "name": "进度条（progress-bar）",
+      "filePath": "references/charts/progress-bar.md",
+      "summary": "定义进度条（百分比/完成度）的 JSON 骨架和灵动设计指引，用于直观展示目标完成进度。",
+      "tags": [
+        "progress-bar",
+        "进度条",
+        "charts",
+        "json结构",
+        "完成度"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/charts/radar.md",
+      "type": "document",
+      "name": "雷达图（radar）",
+      "filePath": "references/charts/radar.md",
+      "summary": "描述雷达图/蜘蛛网图的 JSON 骨架、关键规则和灵动指引，适合多维度能力或属性的对比分析。",
+      "tags": [
+        "radar",
+        "雷达图",
+        "charts",
+        "多维对比",
+        "数据可视化"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/charts/rating.md",
+      "type": "document",
+      "name": "评分指示器（rating）",
+      "filePath": "references/charts/rating.md",
+      "summary": "描述 5 分制评分指示器的结构原理和灵动指引，适合展示产品评分、满意度或质量分级。",
+      "tags": [
+        "rating",
+        "评分",
+        "charts",
+        "5分制",
+        "数据可视化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/charts/ring.md",
+      "type": "document",
+      "name": "环形百分比图（ring）",
+      "filePath": "references/charts/ring.md",
+      "summary": "定义环形百分比图的 JSON 骨架、SVG 计算公式和灵动指引，推荐使用内联 SVG 实现，直观呈现单项占比。",
+      "tags": [
+        "ring",
+        "环形图",
+        "charts",
+        "svg",
+        "百分比"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/charts/runtime-chart-rules.md",
+      "type": "document",
+      "name": "运行时图表规则（runtime-chart-rules）",
+      "filePath": "references/charts/runtime-chart-rules.md",
+      "summary": "PPT Agent 图表生成的运行时核心规则文档，涵盖图表选择矩阵、scene_mode 优先级、内容合同、与卡片关系及失败模式等全面指导原则。",
+      "tags": [
+        "runtime-rules",
+        "图表规则",
+        "charts",
+        "scene-mode",
+        "设计规范"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:references/charts/sparkline.md",
+      "type": "document",
+      "name": "迷你折线图（sparkline）",
+      "filePath": "references/charts/sparkline.md",
+      "summary": "描述迷你折线图（Sparkline）的 JSON 骨架与灵动指引，适合在紧凑空间内展示数据趋势方向。",
+      "tags": [
+        "sparkline",
+        "迷你折线图",
+        "charts",
+        "趋势",
+        "数据可视化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/charts/stacked-bar.md",
+      "type": "document",
+      "name": "堆叠条形图（stacked-bar）",
+      "filePath": "references/charts/stacked-bar.md",
+      "summary": "定义堆叠条形图的结构原理、关键规则和灵动指引，适合多分类占比对比，展示各部分与整体的关系。",
+      "tags": [
+        "stacked-bar",
+        "堆叠条形图",
+        "charts",
+        "占比对比",
+        "数据可视化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/charts/timeline.md",
+      "type": "document",
+      "name": "图表时间轴（chart-timeline）",
+      "filePath": "references/charts/timeline.md",
+      "summary": "描述水平时间轴图表的结构原理、关键规则和灵动指引，作为图表类组件用于展示事件或里程碑序列。",
+      "tags": [
+        "timeline",
+        "时间轴图表",
+        "charts",
+        "里程碑",
+        "数据可视化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/charts/treemap.md",
+      "type": "document",
+      "name": "矩形树图（treemap）",
+      "filePath": "references/charts/treemap.md",
+      "summary": "描述矩形树图的结构原理、关键规则和灵动指引，适合展示层级结构中各部分的面积占比关系。",
+      "tags": [
+        "treemap",
+        "矩形树图",
+        "charts",
+        "层级结构",
+        "数据可视化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/charts/waffle.md",
+      "type": "document",
+      "name": "点阵图（waffle）",
+      "filePath": "references/charts/waffle.md",
+      "summary": "定义点阵图（Waffle Chart）的 JSON 骨架和灵动指引，以直觉化方式呈现百分比，每个格子代表固定比例单位。",
+      "tags": [
+        "waffle",
+        "点阵图",
+        "charts",
+        "百分比",
+        "数据可视化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/layouts/README.md",
+      "type": "document",
+      "name": "版式系统 README",
+      "filePath": "references/layouts/README.md",
+      "summary": "PPT Agent 版式系统总览文档，定义画布物理约束、版式设计哲学（重力场概念）、版式文件提供的结构字段，以及版式决策矩阵与灵动化法则。",
+      "tags": [
+        "版式系统",
+        "布局设计",
+        "重力场",
+        "设计哲学",
+        "决策矩阵"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:references/layouts/asymmetric.md",
+      "type": "document",
+      "name": "非对称两栏版式",
+      "filePath": "references/layouts/asymmetric.md",
+      "summary": "描述 2/3 + 1/3 非对称两栏版式的重力结构意图、反差灵魂、重力反转可能与纵深感制造方式。",
+      "tags": [
+        "非对称",
+        "双栏",
+        "版式",
+        "重力结构",
+        "灵动化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/layouts/hero-top.md",
+      "type": "document",
+      "name": "顶部英雄式版式",
+      "filePath": "references/layouts/hero-top.md",
+      "summary": "定义顶部英雄区大图/大标题 + 底部多子项的版式结构，说明英雄区多种灵魂表达方式与底部子项灵动反差设计要点。",
+      "tags": [
+        "hero",
+        "顶部",
+        "版式",
+        "子项节奏",
+        "灵动化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/layouts/l-shape.md",
+      "type": "document",
+      "name": "L 型版式",
+      "filePath": "references/layouts/l-shape.md",
+      "summary": "描述主体 + 侧翼 + 底部三层 L 型版式结构，涵盖三层级情绪剧变与变奏可能的设计指引。",
+      "tags": [
+        "L型",
+        "三层级",
+        "版式",
+        "侧翼",
+        "灵动化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/layouts/mixed-grid.md",
+      "type": "document",
+      "name": "混合网格版式",
+      "filePath": "references/layouts/mixed-grid.md",
+      "summary": "定义不规则混合网格版式，包含焦点偏移、贯穿横跨、三明治分层等变体结构意图，以及密度不均匀与防边框迷宫的灵动化指引。",
+      "tags": [
+        "混合网格",
+        "不规则",
+        "版式",
+        "密度",
+        "仪表盘"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/layouts/primary-secondary.md",
+      "type": "document",
+      "name": "主次结合版式",
+      "filePath": "references/layouts/primary-secondary.md",
+      "summary": "描述一大两小主次结合版式，强调主区域意境变化必须每次不同，以及辅助区存在感与灵动反转的设计要求。",
+      "tags": [
+        "主次",
+        "大小对比",
+        "版式",
+        "意境变化",
+        "灵动化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/layouts/single-focus.md",
+      "type": "document",
+      "name": "单一焦点版式",
+      "filePath": "references/layouts/single-focus.md",
+      "summary": "定义单一焦点版式的设计哲学，说明三种焦点灵魂表达形式与留白作为设计元素的运用原则。",
+      "tags": [
+        "单一焦点",
+        "留白",
+        "版式",
+        "设计功力",
+        "灵动化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/layouts/symmetric.md",
+      "type": "document",
+      "name": "对称双栏版式",
+      "filePath": "references/layouts/symmetric.md",
+      "summary": "描述 50/50 对称双栏版式，强调对称不等于一模一样，提供超越刻板对称的进阶表达方法与等列分配实现方式。",
+      "tags": [
+        "对称",
+        "双栏",
+        "版式",
+        "50/50",
+        "灵动化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/layouts/t-shape.md",
+      "type": "document",
+      "name": "T 型版式",
+      "filePath": "references/layouts/t-shape.md",
+      "summary": "定义顶部横贯 + 底部偏心 T 型版式，描述顶部大梁多重人格表达与底部深潜区层次设计指引。",
+      "tags": [
+        "T型",
+        "顶部横贯",
+        "版式",
+        "偏心",
+        "灵动化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/layouts/three-column.md",
+      "type": "document",
+      "name": "三栏等宽版式",
+      "filePath": "references/layouts/three-column.md",
+      "summary": "描述三栏等宽版式的重力意图与反千篇一律陷阱策略，提供跨越等宽限制的灵动表达方法。",
+      "tags": [
+        "三栏",
+        "等宽",
+        "版式",
+        "避免陷阱",
+        "灵动化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/layouts/waterfall.md",
+      "type": "document",
+      "name": "瀑布流版式",
+      "filePath": "references/layouts/waterfall.md",
+      "summary": "定义 3 列不等高瀑布流版式，说明参差不齐的天然灵动优势、刻意高低差制造方法与防溢出规则。",
+      "tags": [
+        "瀑布流",
+        "不等高",
+        "版式",
+        "参差",
+        "card_style"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/page-templates/cover.md",
+      "type": "document",
+      "name": "封面页模板",
+      "filePath": "references/page-templates/cover.md",
+      "summary": "定义 PPT 封面页设计规范，以标题为唯一必须元素，其他元素作为可选画面叙事工具，并列出绝对禁止项与唯一硬约束。",
+      "tags": [
+        "封面",
+        "页面模板",
+        "设计规范",
+        "标题",
+        "叙事工具"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/page-templates/end.md",
+      "type": "document",
+      "name": "结束页模板",
+      "filePath": "references/page-templates/end.md",
+      "summary": "定义 PPT 结束页设计规范，核心结论为唯一必须元素，说明与封面呼应而非复制的原则及绝对禁止项。",
+      "tags": [
+        "结束页",
+        "页面模板",
+        "核心结论",
+        "收束",
+        "设计规范"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/page-templates/section.md",
+      "type": "document",
+      "name": "章节封面页模板",
+      "filePath": "references/page-templates/section.md",
+      "summary": "定义 PPT 章节封面页设计规范，章节标题为唯一必须元素，要求多个章节封面之间必须变化以制造呼吸节奏。",
+      "tags": [
+        "章节封面",
+        "页面模板",
+        "呼吸节奏",
+        "变化",
+        "设计规范"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/page-templates/toc.md",
+      "type": "document",
+      "name": "目录页模板",
+      "filePath": "references/page-templates/toc.md",
+      "summary": "定义 PPT 目录页设计规范，Part 结构展示为唯一必须元素，开放构图手法并列出绝对禁止项与唯一硬约束。",
+      "tags": [
+        "目录",
+        "页面模板",
+        "Part结构",
+        "地图俯瞰",
+        "设计规范"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/styles/README.md",
+      "type": "document",
+      "name": "风格系统 README",
+      "filePath": "references/styles/README.md",
+      "summary": "PPT Agent 风格系统核心文档，完整定义 style.json 数据模型、色彩原则、8 个参考调色板、风格决策流程与灵动创作方法论，以及装饰技法工具箱和多语言排版优化指引。",
+      "tags": [
+        "风格系统",
+        "style.json",
+        "调色板",
+        "设计方法论",
+        "多语言排版"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:references/styles/blue-white.md",
+      "type": "document",
+      "name": "蓝白商务风格",
+      "filePath": "references/styles/blue-white.md",
+      "summary": "定义蓝白商务（blue_white）预置风格的 style.json 参数配置，呈现 McKinsey 报告感的装饰 DNA，适用于最通用的默认场景。",
+      "tags": [
+        "蓝白",
+        "商务",
+        "style.json",
+        "预置风格",
+        "McKinsey"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/styles/dark-tech.md",
+      "type": "document",
+      "name": "暗黑科技风格",
+      "filePath": "references/styles/dark-tech.md",
+      "summary": "定义暗黑科技（dark_tech）预置风格的 style.json 参数配置，呈现科技发布会感的装饰 DNA，适合高科技产品展示场景。",
+      "tags": [
+        "暗黑",
+        "科技",
+        "style.json",
+        "预置风格",
+        "发布会"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/styles/fresh-green.md",
+      "type": "document",
+      "name": "清新自然风格",
+      "filePath": "references/styles/fresh-green.md",
+      "summary": "定义清新自然（fresh_green）预置风格的 style.json 参数配置，呈现有机清新感的装饰 DNA，适合环保、健康类主题。",
+      "tags": [
+        "清新",
+        "绿色",
+        "style.json",
+        "预置风格",
+        "有机"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/styles/luxury-purple.md",
+      "type": "document",
+      "name": "紫金奢华风格",
+      "filePath": "references/styles/luxury-purple.md",
+      "summary": "定义紫金奢华（luxury_purple）预置风格的 style.json 参数配置，呈现高定奢华感的装饰 DNA，适合奢侈品、高端品牌主题。",
+      "tags": [
+        "紫金",
+        "奢华",
+        "style.json",
+        "预置风格",
+        "高定"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/styles/minimal-gray.md",
+      "type": "document",
+      "name": "极简灰白风格",
+      "filePath": "references/styles/minimal-gray.md",
+      "summary": "定义极简灰白（minimal_gray）预置风格的 style.json 参数配置，呈现学术论文感的装饰 DNA，适合学术研究、技术报告场景。",
+      "tags": [
+        "极简",
+        "灰白",
+        "style.json",
+        "预置风格",
+        "学术"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/styles/royal-red.md",
+      "type": "document",
+      "name": "朱红宫墙风格",
+      "filePath": "references/styles/royal-red.md",
+      "summary": "定义朱红宫墙（royal_red）预置风格的 style.json 参数配置，呈现中国传统国风感的装饰 DNA，适合文化、传统类主题。",
+      "tags": [
+        "朱红",
+        "国风",
+        "style.json",
+        "预置风格",
+        "传统文化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/styles/runtime-style-palette-index.md",
+      "type": "document",
+      "name": "运行时风格调色板索引",
+      "filePath": "references/styles/runtime-style-palette-index.md",
+      "summary": "定义运行时风格调色板的默认选择顺序与预置风格索引表，规定 AI 代理在无明确风格指令时的风格选用优先级规则。",
+      "tags": [
+        "运行时",
+        "调色板索引",
+        "风格选择",
+        "优先级",
+        "预置风格"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/styles/runtime-style-rules.md",
+      "type": "document",
+      "name": "运行时风格规则",
+      "filePath": "references/styles/runtime-style-rules.md",
+      "summary": "定义 style.json 字段合同的运行时规则，涵盖 mood_keywords、design_soul、variation_strategy、css_snippets 等字段写法规范，以及风格自由区与五类风格失败模式的诊断指引。",
+      "tags": [
+        "运行时规则",
+        "style.json",
+        "字段合同",
+        "风格失败",
+        "CSS"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/styles/vibrant-rainbow.md",
+      "type": "document",
+      "name": "活力彩虹风格",
+      "filePath": "references/styles/vibrant-rainbow.md",
+      "summary": "定义活力彩虹（vibrant_rainbow）预置风格的 style.json 参数配置，呈现创意活力感的装饰 DNA，适合创意产业、年轻化品牌主题。",
+      "tags": [
+        "彩虹",
+        "活力",
+        "style.json",
+        "预置风格",
+        "创意"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/styles/warm-earth.md",
+      "type": "document",
+      "name": "暖色大地风格",
+      "filePath": "references/styles/warm-earth.md",
+      "summary": "定义暖色大地（warm_earth）预置风格的 style.json 参数配置，呈现精品咖啡馆温暖质感的装饰 DNA，适合生活方式、餐饮类主题。",
+      "tags": [
+        "暖色",
+        "大地",
+        "style.json",
+        "预置风格",
+        "生活方式"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/cli-cheatsheet.md",
+      "type": "document",
+      "name": "cli-cheatsheet.md",
+      "filePath": "references/cli-cheatsheet.md",
+      "summary": "PPT Agent 全流程 CLI 操作速查表，覆盖从 Step 0 采访到 Step 5 导出的每个步骤的 prompt 注入命令、断点审计与返工流程、资源路由以及里程碑验收检查清单。",
+      "tags": [
+        "cli",
+        "cheatsheet",
+        "workflow",
+        "prompt-injection",
+        "step-by-step"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:references/prompts/module-structured-interview-ui.md",
+      "type": "document",
+      "name": "module-structured-interview-ui.md",
+      "filePath": "references/prompts/module-structured-interview-ui.md",
+      "summary": "结构化 UI 采访模式的功能模块，定义 CLI 原生结构化采访的组件格式骨架、字段约束和提炼执行纪律，作为 tpl-interview-structured-ui.md 的可复用功能块被引用。",
+      "tags": [
+        "interview",
+        "structured-ui",
+        "module",
+        "component-format"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/prompts/module-text-interview-fallback.md",
+      "type": "document",
+      "name": "module-text-interview-fallback.md",
+      "filePath": "references/prompts/module-text-interview-fallback.md",
+      "summary": "文本回退采访模式的功能模块，定义结构化文本采访单的强制执行纪律、固定输出格式和归纳后的问答落点，作为 tpl-interview-text-fallback.md 的可复用功能块被引用。",
+      "tags": [
+        "interview",
+        "text-fallback",
+        "module",
+        "output-format"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/prompts/step4/tpl-page-audit-request.md",
+      "type": "document",
+      "name": "tpl-page-audit-request.md",
+      "filePath": "references/prompts/step4/tpl-page-audit-request.md",
+      "summary": "Step 4 人工审计返工请求模板，当用户在断点处发起审计返工时提交给 PagePatchAgent 的指令片段，内容简洁仅包含必要的上下文和返工触发字段。",
+      "tags": [
+        "step4",
+        "audit",
+        "rework-request",
+        "breakpoint"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/prompts/step4/tpl-page-breakpoint-orchestrator.md",
+      "type": "document",
+      "name": "tpl-page-breakpoint-orchestrator.md",
+      "filePath": "references/prompts/step4/tpl-page-breakpoint-orchestrator.md",
+      "summary": "PagePatchAgent 断点返工调度指令模板，根据返工起跑节点（planning/html/review）分支执行，指定阶段规则、用户审计材料使用要求和最终 FINALIZE 格式，用于人工审计后的补丁流程。",
+      "tags": [
+        "step4",
+        "breakpoint",
+        "orchestrator",
+        "patch-agent",
+        "rework"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:references/prompts/step4/tpl-page-html.md",
+      "type": "document",
+      "name": "tpl-page-html.md",
+      "filePath": "references/prompts/step4/tpl-page-html.md",
+      "summary": "Step 4 单页 HTML 生产阶段（Stage 2）提示模板，指导 PageAgent 根据 Planning 骨架完成 HTML 设计稿的完整生产，包含任务包、执行链路和阶段边界规范。",
+      "tags": [
+        "step4",
+        "html-production",
+        "page-agent",
+        "stage2"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/prompts/step4/tpl-page-orchestrator.md",
+      "type": "document",
+      "name": "tpl-page-orchestrator.md",
+      "filePath": "references/prompts/step4/tpl-page-orchestrator.md",
+      "summary": "PageAgent 端到端调度指令模板，按渐进式上下文协议依序调度 Planning、HTML、Review 三个阶段，定义上下文隔离规则和最终 FINALIZE 格式，是 Step 4 单页生产的总控 prompt。",
+      "tags": [
+        "step4",
+        "orchestrator",
+        "page-agent",
+        "progressive-context"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:references/prompts/step4/tpl-page-planning.md",
+      "type": "document",
+      "name": "tpl-page-planning.md",
+      "filePath": "references/prompts/step4/tpl-page-planning.md",
+      "summary": "Step 4 单页策划阶段（Stage 1）提示模板，指导 PageAgent 完成页面骨架规划，包含设计原则快速参考、任务包、产物路径和设计决策驱动提问，为后续 HTML 生产提供结构基础。",
+      "tags": [
+        "step4",
+        "planning",
+        "page-agent",
+        "stage1",
+        "design-principles"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/prompts/step4/tpl-page-review.md",
+      "type": "document",
+      "name": "tpl-page-review.md",
+      "filePath": "references/prompts/step4/tpl-page-review.md",
+      "summary": "Step 4 单页视觉审查与 QA 阶段（Stage 3）提示模板，定义严格循环的审查修复流程、Runtime 失败模式合同违约检查和 visual_qa.py 强制调用规则，确保页面达到视觉质量标准后才输出 FINALIZE。",
+      "tags": [
+        "step4",
+        "review",
+        "qa",
+        "visual-quality",
+        "stage3"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:references/prompts/tpl-interview-structured-ui.md",
+      "type": "document",
+      "name": "tpl-interview-structured-ui.md",
+      "filePath": "references/prompts/tpl-interview-structured-ui.md",
+      "summary": "结构化 UI 采访模式的顶层 prompt 模板，声明当前执行模式并组合引用共享采访核心与 Structured UI 模块，生成最终采访问卷的完整指令。",
+      "tags": [
+        "interview",
+        "structured-ui",
+        "template",
+        "step0"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/prompts/tpl-interview-text-fallback.md",
+      "type": "document",
+      "name": "tpl-interview-text-fallback.md",
+      "filePath": "references/prompts/tpl-interview-text-fallback.md",
+      "summary": "文本回退采访模式的顶层 prompt 模板，声明当前执行模式并组合引用共享采访核心与 Text Fallback 模块，用于不支持结构化 UI 的 CLI 环境。",
+      "tags": [
+        "interview",
+        "text-fallback",
+        "template",
+        "step0"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/prompts/tpl-interview.md",
+      "type": "document",
+      "name": "tpl-interview.md",
+      "filePath": "references/prompts/tpl-interview.md",
+      "summary": "采访问卷共享核心模板，定义业务场景、结构密度、视觉审美、构建环境和人工审计控制五个维度的必覆盖问题，并规定字段归一化映射和 interview-qa.txt 写盘锚点，被两种采访模式模板引用。",
+      "tags": [
+        "interview",
+        "shared-core",
+        "requirements-gathering",
+        "five-dimensions"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/prompts/tpl-outline-orchestrator.md",
+      "type": "document",
+      "name": "tpl-outline-orchestrator.md",
+      "filePath": "references/prompts/tpl-outline-orchestrator.md",
+      "summary": "大纲生成渐进式调度指令模板，协调 Phase 1（大纲编写）和 Phase 2（严格自审与修复）的两阶段流程，定义上下文隔离规则与禁止行为，是 Step 3 大纲步骤的总控 prompt。",
+      "tags": [
+        "outline",
+        "orchestrator",
+        "step3",
+        "progressive-context"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/prompts/tpl-outline-phase1.md",
+      "type": "document",
+      "name": "tpl-outline-phase1.md",
+      "filePath": "references/prompts/tpl-outline-phase1.md",
+      "summary": "大纲 Phase 1 提示模板，负责根据采访结果和研究摘要生成初版 PPT 大纲，包含任务包、产物路径和执行细则，产出 outline-draft.md。",
+      "tags": [
+        "outline",
+        "phase1",
+        "step3",
+        "draft-generation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/prompts/tpl-outline-phase2.md",
+      "type": "document",
+      "name": "tpl-outline-phase2.md",
+      "filePath": "references/prompts/tpl-outline-phase2.md",
+      "summary": "大纲 Phase 2 提示模板，对 Phase 1 输出的草稿进行严格自审与修复，包含多项硬规则约束和执行摘要，产出 outline-final.md。",
+      "tags": [
+        "outline",
+        "phase2",
+        "step3",
+        "self-review",
+        "quality-gate"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/prompts/tpl-research-synth-orchestrator.md",
+      "type": "document",
+      "name": "tpl-research-synth-orchestrator.md",
+      "filePath": "references/prompts/tpl-research-synth-orchestrator.md",
+      "summary": "ResearchSynth 渐进式调度指令模板，协调 Phase 1（搜索与搜集）和 Phase 2（数据格式化、整理与自审）的两阶段研究综合流程，是 Step 2A 搜索分支的总控 prompt。",
+      "tags": [
+        "research",
+        "orchestrator",
+        "step2a",
+        "progressive-context"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/prompts/tpl-research-synth-phase1.md",
+      "type": "document",
+      "name": "tpl-research-synth-phase1.md",
+      "filePath": "references/prompts/tpl-research-synth-phase1.md",
+      "summary": "ResearchSynth Phase 1 提示模板，执行网络搜索与资料搜集任务，包含任务包、执行细则和产物路径，产出原始搜索结果数据供 Phase 2 处理。",
+      "tags": [
+        "research",
+        "phase1",
+        "step2a",
+        "web-search"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/prompts/tpl-research-synth-phase2.md",
+      "type": "document",
+      "name": "tpl-research-synth-phase2.md",
+      "filePath": "references/prompts/tpl-research-synth-phase2.md",
+      "summary": "ResearchSynth Phase 2 提示模板，对搜索结果进行数据格式化、整理与自审，包含详细执行流程和 FINALIZE 前的自审检查清单，产出结构化研究摘要文件。",
+      "tags": [
+        "research",
+        "phase2",
+        "step2a",
+        "data-formatting",
+        "quality-gate"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/prompts/tpl-source-synth-orchestrator.md",
+      "type": "document",
+      "name": "tpl-source-synth-orchestrator.md",
+      "filePath": "references/prompts/tpl-source-synth-orchestrator.md",
+      "summary": "SourceSynth 渐进式调度指令模板，协调 Phase 1（资料读取与结构化提炼）和 Phase 2（质量自审与边界校验）的两阶段本地资料综合流程，是 Step 2B 非搜索分支的总控 prompt。",
+      "tags": [
+        "source-synth",
+        "orchestrator",
+        "step2b",
+        "progressive-context"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/prompts/tpl-source-synth-phase1.md",
+      "type": "document",
+      "name": "tpl-source-synth-phase1.md",
+      "filePath": "references/prompts/tpl-source-synth-phase1.md",
+      "summary": "SourceSynth Phase 1 提示模板，从用户提供的本地资料（文档、代码、数据等）进行读取和结构化提炼，包含任务包、产物路径和执行细则。",
+      "tags": [
+        "source-synth",
+        "phase1",
+        "step2b",
+        "local-files"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/prompts/tpl-source-synth-phase2.md",
+      "type": "document",
+      "name": "tpl-source-synth-phase2.md",
+      "filePath": "references/prompts/tpl-source-synth-phase2.md",
+      "summary": "SourceSynth Phase 2 提示模板，对 Phase 1 提炼结果进行质量自审与边界校验，包含详细自审检查清单、执行流程和硬规则约束，确保资料摘要的准确性和完整性。",
+      "tags": [
+        "source-synth",
+        "phase2",
+        "step2b",
+        "quality-review",
+        "boundary-check"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/prompts/tpl-style-orchestrator.md",
+      "type": "document",
+      "name": "tpl-style-orchestrator.md",
+      "filePath": "references/prompts/tpl-style-orchestrator.md",
+      "summary": "Style 渐进式调度指令模板，协调 Phase 1（约束提炼与风格输出）和 Phase 2（字段合同自审）的两阶段风格锁定流程，是 Step 3.5 风格步骤的总控 prompt。",
+      "tags": [
+        "style",
+        "orchestrator",
+        "step3.5",
+        "progressive-context"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/prompts/tpl-style-phase1.md",
+      "type": "document",
+      "name": "tpl-style-phase1.md",
+      "filePath": "references/prompts/tpl-style-phase1.md",
+      "summary": "Style Phase 1 提示模板，根据采访结果提炼风格约束并输出设计风格参数，包含 Runtime 风格规则、Style Preset Index、Style Palette Index，产出 style.json 风格合同文件。",
+      "tags": [
+        "style",
+        "phase1",
+        "step3.5",
+        "style-preset",
+        "design-token"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/prompts/tpl-style-phase2.md",
+      "type": "document",
+      "name": "tpl-style-phase2.md",
+      "filePath": "references/prompts/tpl-style-phase2.md",
+      "summary": "Style Phase 2 提示模板，对 Phase 1 输出的风格 JSON 进行字段合同自审，验证所有必填字段的合规性，包含执行摘要和多项硬规则，确保 style.json 完整有效。",
+      "tags": [
+        "style",
+        "phase2",
+        "step3.5",
+        "contract-validation",
+        "quality-gate"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/playbooks/outline-phase1-playbook.md",
+      "type": "document",
+      "name": "outline-phase1-playbook.md",
+      "filePath": "references/playbooks/outline-phase1-playbook.md",
+      "summary": "大纲生成第一阶段执行手册，规定了叙事支柱、5步思考过程、密度倾向分级、outline.txt强制格式骨架以及叙事角色与page_type的映射规则。",
+      "tags": [
+        "outline",
+        "playbook",
+        "density",
+        "page-type",
+        "narrative"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:references/playbooks/outline-phase2-playbook.md",
+      "type": "document",
+      "name": "outline-phase2-playbook.md",
+      "filePath": "references/playbooks/outline-phase2-playbook.md",
+      "summary": "大纲生成第二阶段自审手册，包含9项严格检查清单和密度铁律，确保outline.txt质量并以FINALIZE签名契约作为输出门禁。",
+      "tags": [
+        "outline",
+        "playbook",
+        "self-review",
+        "quality-gate",
+        "density"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/playbooks/research-phase1-playbook.md",
+      "type": "document",
+      "name": "research-phase1-playbook.md",
+      "filePath": "references/playbooks/research-phase1-playbook.md",
+      "summary": "研究阶段第一阶段手册，规定了6大搜索维度、按目标页数动态规划查询量，以及高说服力叙事武器与结构化数据的采集目标。",
+      "tags": [
+        "research",
+        "playbook",
+        "search",
+        "narrative-weapon",
+        "data"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/playbooks/research-phase2-playbook.md",
+      "type": "document",
+      "name": "research-phase2-playbook.md",
+      "filePath": "references/playbooks/research-phase2-playbook.md",
+      "summary": "研究阶段第二阶段手册，规定数据对齐清洗、结构化数据包构建以及search-brief.txt的输出骨架合同格式。",
+      "tags": [
+        "research",
+        "playbook",
+        "data-format",
+        "search-brief",
+        "quality-gate"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/playbooks/source-phase1-playbook.md",
+      "type": "document",
+      "name": "source-phase1-playbook.md",
+      "filePath": "references/playbooks/source-phase1-playbook.md",
+      "summary": "素材处理第一阶段手册，涵盖策略识别、多格式文件感知处理指南以及叙事武器与source-brief.txt的产出骨架规范。",
+      "tags": [
+        "source",
+        "playbook",
+        "material-processing",
+        "source-brief",
+        "extraction"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/playbooks/source-phase2-playbook.md",
+      "type": "document",
+      "name": "source-phase2-playbook.md",
+      "filePath": "references/playbooks/source-phase2-playbook.md",
+      "summary": "素材处理第二阶段质量自审手册，包含逐项检查清单和严格模式声明约束红线，确保source-brief.txt输出合规。",
+      "tags": [
+        "source",
+        "playbook",
+        "self-review",
+        "quality-gate",
+        "strict-mode"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/playbooks/step4/page-html-playbook.md",
+      "type": "document",
+      "name": "page-html-playbook.md",
+      "filePath": "references/playbooks/step4/page-html-playbook.md",
+      "summary": "Step4单页HTML生成手册，分8个Phase规定骨架理解、资源消费、密度执行、图片模式、画布物理红线、风格变量绑定等关键约束。",
+      "tags": [
+        "html",
+        "playbook",
+        "step4",
+        "canvas",
+        "density"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:references/playbooks/step4/page-planning-playbook.md",
+      "type": "document",
+      "name": "page-planning-playbook.md",
+      "filePath": "references/playbooks/step4/page-planning-playbook.md",
+      "summary": "Step4单页策划稿手册，分9个Phase规定页面定位理解、资源发现、密度合同冻结、planningN.json结构合同、图片策略与cards字段填充规范。",
+      "tags": [
+        "planning",
+        "playbook",
+        "step4",
+        "planning-json",
+        "density-contract"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:references/playbooks/step4/page-review-playbook.md",
+      "type": "document",
+      "name": "page-review-playbook.md",
+      "filePath": "references/playbooks/step4/page-review-playbook.md",
+      "summary": "Step4单页视觉审查与HTML修复手册，规定截图存档协议、三遍视觉扫描、P0/P1/P2缺陷分级、修复执行规范及轮次控制策略。",
+      "tags": [
+        "review",
+        "playbook",
+        "step4",
+        "visual-qa",
+        "bug-fix"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:references/playbooks/style-phase1-playbook.md",
+      "type": "document",
+      "name": "style-phase1-playbook.md",
+      "filePath": "references/playbooks/style-phase1-playbook.md",
+      "summary": "风格合同定义第一阶段手册，涵盖风格约束提炼、调色盘创作和style.json合同生成，并规定css_variables键命名与数量的强制红线。",
+      "tags": [
+        "style",
+        "playbook",
+        "style-json",
+        "css-variables",
+        "color-palette"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/playbooks/style-phase2-playbook.md",
+      "type": "document",
+      "name": "style-phase2-playbook.md",
+      "filePath": "references/playbooks/style-phase2-playbook.md",
+      "summary": "风格合同第二阶段质量自审手册，包含7项合法性检查清单和FINALIZE签名契约门禁，确保style.json输出规范。",
+      "tags": [
+        "style",
+        "playbook",
+        "self-review",
+        "quality-gate",
+        "style-json"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/design-runtime/css-weapons.md",
+      "type": "document",
+      "name": "css-weapons.md",
+      "filePath": "references/design-runtime/css-weapons.md",
+      "summary": "包含12种高级CSS视觉技法（W1-W12）的武器库，涵盖渐变文字、clip-path裁剪、毛玻璃效果、多层阴影、HUD边角框定等，供HTML生成阶段直接引用。",
+      "tags": [
+        "css",
+        "design-runtime",
+        "visual-effects",
+        "gradient",
+        "layout"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:references/design-runtime/data-type-decoration-mapping.md",
+      "type": "document",
+      "name": "data-type-decoration-mapping.md",
+      "filePath": "references/design-runtime/data-type-decoration-mapping.md",
+      "summary": "数据类型到装饰灵感的参考映射表，按数据展示、商业分析、流程结构等类别列出装饰密度分级，指导策划阶段的装饰决策。",
+      "tags": [
+        "design-runtime",
+        "decoration",
+        "data-type",
+        "mapping",
+        "planning"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/design-runtime/data-type-visual-mapping.md",
+      "type": "document",
+      "name": "data-type-visual-mapping.md",
+      "filePath": "references/design-runtime/data-type-visual-mapping.md",
+      "summary": "数据类型到视觉呈现方式的参考映射表，按多种业务数据类型给出card_type建议和组合消费逻辑，辅助HTML布局选型。",
+      "tags": [
+        "design-runtime",
+        "visual-mapping",
+        "data-type",
+        "card-type",
+        "layout"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/design-runtime/design-specs.md",
+      "type": "document",
+      "name": "design-specs.md",
+      "filePath": "references/design-runtime/design-specs.md",
+      "summary": "核心设计规格书（A-E节），由resource_loader.py自动注入，规定画布尺寸、导航骨架、排版阶梯、色彩节奏、页面类型意境和HTML输出规范。",
+      "tags": [
+        "design-runtime",
+        "design-specs",
+        "canvas",
+        "typography",
+        "color"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:references/design-runtime/director-command-examples.md",
+      "type": "document",
+      "name": "director-command-examples.md",
+      "filePath": "references/design-runtime/director-command-examples.md",
+      "summary": "Director Command的10种页面类型各2个完整示例，覆盖封面、目录、章节封面、仪表盘、对比、流程、引言、团队、架构和结束页。",
+      "tags": [
+        "design-runtime",
+        "director-command",
+        "examples",
+        "page-type",
+        "template"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:references/design-runtime/director-command-rules.md",
+      "type": "document",
+      "name": "director-command-rules.md",
+      "filePath": "references/design-runtime/director-command-rules.md",
+      "summary": "Director Command字段运行时规则，明确mood、spatial_strategy、anchor_treatment、techniques、prose各字段的职责与写法规则，及常见failure modes。",
+      "tags": [
+        "design-runtime",
+        "director-command",
+        "rules",
+        "fields",
+        "failure-modes"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/principles/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "references/principles/README.md",
+      "summary": "PPT设计原则目录索引，说明各原则文件的适用场景及在策划阶段的读取时机，作为principles目录的导航入口。",
+      "tags": [
+        "principles",
+        "index",
+        "design",
+        "navigation",
+        "ppt"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:references/principles/cognitive-load.md",
+      "type": "document",
+      "name": "cognitive-load.md",
+      "filePath": "references/principles/cognitive-load.md",
+      "summary": "认知负荷与信息密度设计原则，涵盖Miller定律、信噪比、Mayer多媒体学习理论以及一页一观点法则，指导内容密度控制。",
+      "tags": [
+        "principles",
+        "cognitive-load",
+        "density",
+        "information",
+        "miller-law"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/principles/color-psychology.md",
+      "type": "document",
+      "name": "color-psychology.md",
+      "filePath": "references/principles/color-psychology.md",
+      "summary": "色彩心理与运用原则，包含60-30-10法则、色彩情感映射表、对比度安全标准与色彩一致性要求，指导调色盘决策。",
+      "tags": [
+        "principles",
+        "color",
+        "psychology",
+        "contrast",
+        "palette"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/principles/composition.md",
+      "type": "document",
+      "name": "composition.md",
+      "filePath": "references/principles/composition.md",
+      "summary": "构图与留白设计原则，涵盖格式塔原则、三分法和三层级留白，指导页面视觉平衡与空间感的建立。",
+      "tags": [
+        "principles",
+        "composition",
+        "whitespace",
+        "gestalt",
+        "layout"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/principles/data-visualization.md",
+      "type": "document",
+      "name": "data-visualization.md",
+      "filePath": "references/principles/data-visualization.md",
+      "summary": "数据可视化设计原则，基于Tufte数据墨水比、图表选择黄金法则、Few仪表盘原则和数据诚信要求，指导数据页视觉化决策。",
+      "tags": [
+        "principles",
+        "data-visualization",
+        "chart",
+        "tufte",
+        "dashboard"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/principles/design-principles-cheatsheet.md",
+      "type": "document",
+      "name": "design-principles-cheatsheet.md",
+      "filePath": "references/principles/design-principles-cheatsheet.md",
+      "summary": "Step4字段级设计原则速查表，整合CARP四原则、6项核心原则与逐页8项体检单，作为策划阶段的综合操作手册。",
+      "tags": [
+        "principles",
+        "cheatsheet",
+        "carp",
+        "step4",
+        "visual-hierarchy"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:references/principles/narrative-arc.md",
+      "type": "document",
+      "name": "narrative-arc.md",
+      "filePath": "references/principles/narrative-arc.md",
+      "summary": "叙事结构与节奏原则，涵盖金字塔原理、SCQA框架、故事弧线和注意力曲线，指导演示文稿的整体叙事逻辑设计。",
+      "tags": [
+        "principles",
+        "narrative",
+        "story-arc",
+        "scqa",
+        "attention-curve"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/principles/runtime-failure-modes.md",
+      "type": "document",
+      "name": "runtime-failure-modes.md",
+      "filePath": "references/principles/runtime-failure-modes.md",
+      "summary": "运行时失败模式参考文档，定义underfill、support collapse、launch drift等8种内容与视觉失败类型，为审查和修复阶段提供对账标准。",
+      "tags": [
+        "principles",
+        "failure-modes",
+        "review",
+        "content-contract",
+        "visual"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:references/principles/visual-hierarchy.md",
+      "type": "document",
+      "name": "visual-hierarchy.md",
+      "filePath": "references/principles/visual-hierarchy.md",
+      "summary": "视觉层级与CRAP原则（Contrast/Repetition/Alignment/Proximity）说明，包含视觉重量阶梯，是视觉设计的基础理论参考。",
+      "tags": [
+        "principles",
+        "visual-hierarchy",
+        "crap",
+        "contrast",
+        "typography"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:README.md",
+      "target": "document:README_EN.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:SKILL.md",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:README_EN.md",
+      "target": "document:SKILL.md",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:SKILL.md",
+      "target": "file:scripts/contract_validator.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:SKILL.md",
+      "target": "file:scripts/planning_validator.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:SKILL.md",
+      "target": "file:scripts/visual_qa.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:SKILL.md",
+      "target": "file:scripts/prompt_harness.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:SKILL.md",
+      "target": "file:scripts/resource_loader.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:SKILL.md",
+      "target": "file:scripts/workflow_versions.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/README.md",
+      "target": "file:scripts/resource_loader.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/README.md",
+      "target": "file:scripts/planning_validator.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/README.md",
+      "target": "file:scripts/prompt_harness.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/README.md",
+      "target": "file:scripts/check_skill.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:scripts/README.md",
+      "target": "file:scripts/check_skill.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:scripts/README.md",
+      "target": "file:scripts/contract_validator.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:scripts/README.md",
+      "target": "file:scripts/planning_validator.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:scripts/README.md",
+      "target": "file:scripts/prompt_harness.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:scripts/README.md",
+      "target": "file:scripts/resource_loader.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:scripts/README.md",
+      "target": "file:scripts/visual_qa.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:scripts/README.md",
+      "target": "file:scripts/html2png.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:scripts/README.md",
+      "target": "file:scripts/html2svg.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:scripts/README.md",
+      "target": "file:scripts/html_packager.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:scripts/README.md",
+      "target": "file:scripts/png2pptx.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:scripts/README.md",
+      "target": "file:scripts/svg2pptx.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:scripts/README.md",
+      "target": "file:scripts/milestone_check.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:scripts/README.md",
+      "target": "file:scripts/smoke_skill.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:scripts/README.md",
+      "target": "file:scripts/subagent_logger.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:scripts/README.md",
+      "target": "file:scripts/workflow_versions.py",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/check_skill.py",
+      "target": "class:CheckResult",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/check_skill.py",
+      "target": "class:HarnessInvocation",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/check_skill.py",
+      "target": "function:find_prompt_harness_invocations",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/check_skill.py",
+      "target": "function:run_all_checks",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/contract_validator.py",
+      "target": "class:ValidationResult",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/html2png.py",
+      "target": "function:convert",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/html_packager.py",
+      "target": "function:build_preview",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/milestone_check.py",
+      "target": "class:Checker",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/planning_validator.py",
+      "target": "class:ValidationResult_planning",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/planning_validator.py",
+      "target": "function:validate_page",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/prompt_harness.py",
+      "target": "function:fill_template",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/resource_loader.py",
+      "target": "function:generate_menu",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/smoke_skill.py",
+      "target": "class:SmokeResult",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/svg2pptx.py",
+      "target": "class:SvgConverter",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/workflow_versions.py",
+      "target": "function:build_workflow_metadata",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/check_skill.py",
+      "target": "file:scripts/planning_validator.py",
+      "type": "imports",
+      "weight": 0.7,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/check_skill.py",
+      "target": "file:scripts/prompt_harness.py",
+      "type": "imports",
+      "weight": 0.7,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/contract_validator.py",
+      "target": "file:scripts/planning_validator.py",
+      "type": "imports",
+      "weight": 0.7,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/milestone_check.py",
+      "target": "file:scripts/planning_validator.py",
+      "type": "imports",
+      "weight": 0.7,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/planning_validator.py",
+      "target": "file:scripts/workflow_versions.py",
+      "type": "imports",
+      "weight": 0.7,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/smoke_skill.py",
+      "target": "file:scripts/planning_validator.py",
+      "type": "imports",
+      "weight": 0.7,
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/smoke_skill.py",
+      "target": "file:scripts/workflow_versions.py",
+      "type": "imports",
+      "weight": 0.7,
+      "direction": "forward"
+    },
+    {
+      "source": "function:run_all_checks",
+      "target": "function:find_prompt_harness_invocations",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward"
+    },
+    {
+      "source": "function:run_all_checks",
+      "target": "function:validate_page",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward"
+    },
+    {
+      "source": "class:Checker",
+      "target": "function:validate_page",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward"
+    },
+    {
+      "source": "function:build_workflow_metadata",
+      "target": "file:scripts/workflow_versions.py",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/blocks/README.md",
+      "target": "document:references/blocks/card-styles.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/blocks/README.md",
+      "target": "document:references/blocks/comparison.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/blocks/README.md",
+      "target": "document:references/blocks/diagram.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/blocks/README.md",
+      "target": "document:references/blocks/image-hero.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/blocks/README.md",
+      "target": "document:references/blocks/matrix-chart.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/blocks/README.md",
+      "target": "document:references/blocks/people.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/blocks/README.md",
+      "target": "document:references/blocks/quote.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/blocks/README.md",
+      "target": "document:references/blocks/timeline.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/blocks/card-styles.md",
+      "target": "document:references/blocks/comparison.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/blocks/card-styles.md",
+      "target": "document:references/blocks/people.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/blocks/card-styles.md",
+      "target": "document:references/blocks/quote.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/blocks/comparison.md",
+      "target": "document:references/blocks/matrix-chart.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/blocks/diagram.md",
+      "target": "document:references/blocks/timeline.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/README.md",
+      "target": "document:references/charts/comparison-bar.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/README.md",
+      "target": "document:references/charts/funnel.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/README.md",
+      "target": "document:references/charts/kpi.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/README.md",
+      "target": "document:references/charts/metric-row.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/README.md",
+      "target": "document:references/charts/progress-bar.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/README.md",
+      "target": "document:references/charts/radar.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/README.md",
+      "target": "document:references/charts/rating.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/README.md",
+      "target": "document:references/charts/ring.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/README.md",
+      "target": "document:references/charts/sparkline.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/README.md",
+      "target": "document:references/charts/stacked-bar.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/README.md",
+      "target": "document:references/charts/timeline.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/README.md",
+      "target": "document:references/charts/treemap.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/README.md",
+      "target": "document:references/charts/waffle.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/runtime-chart-rules.md",
+      "target": "document:references/charts/README.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/runtime-chart-rules.md",
+      "target": "document:references/charts/kpi.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/runtime-chart-rules.md",
+      "target": "document:references/charts/comparison-bar.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/runtime-chart-rules.md",
+      "target": "document:references/charts/progress-bar.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/kpi.md",
+      "target": "document:references/charts/metric-row.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/kpi.md",
+      "target": "document:references/charts/ring.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/kpi.md",
+      "target": "document:references/charts/sparkline.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/comparison-bar.md",
+      "target": "document:references/charts/stacked-bar.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/comparison-bar.md",
+      "target": "document:references/charts/radar.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/progress-bar.md",
+      "target": "document:references/charts/ring.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/progress-bar.md",
+      "target": "document:references/charts/waffle.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/funnel.md",
+      "target": "document:references/charts/stacked-bar.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/treemap.md",
+      "target": "document:references/charts/stacked-bar.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/charts/timeline.md",
+      "target": "document:references/blocks/timeline.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/blocks/README.md",
+      "target": "document:references/charts/README.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/README.md",
+      "target": "document:references/layouts/asymmetric.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/README.md",
+      "target": "document:references/layouts/hero-top.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/README.md",
+      "target": "document:references/layouts/l-shape.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/README.md",
+      "target": "document:references/layouts/mixed-grid.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/README.md",
+      "target": "document:references/layouts/primary-secondary.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/README.md",
+      "target": "document:references/layouts/single-focus.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/README.md",
+      "target": "document:references/layouts/symmetric.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/README.md",
+      "target": "document:references/layouts/t-shape.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/README.md",
+      "target": "document:references/layouts/three-column.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/README.md",
+      "target": "document:references/layouts/waterfall.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/asymmetric.md",
+      "target": "document:references/layouts/hero-top.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/asymmetric.md",
+      "target": "document:references/layouts/l-shape.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/asymmetric.md",
+      "target": "document:references/layouts/mixed-grid.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/asymmetric.md",
+      "target": "document:references/layouts/primary-secondary.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/asymmetric.md",
+      "target": "document:references/layouts/single-focus.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/asymmetric.md",
+      "target": "document:references/layouts/symmetric.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/asymmetric.md",
+      "target": "document:references/layouts/t-shape.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/asymmetric.md",
+      "target": "document:references/layouts/three-column.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/asymmetric.md",
+      "target": "document:references/layouts/waterfall.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/hero-top.md",
+      "target": "document:references/layouts/l-shape.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/hero-top.md",
+      "target": "document:references/layouts/mixed-grid.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/hero-top.md",
+      "target": "document:references/layouts/primary-secondary.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/hero-top.md",
+      "target": "document:references/layouts/single-focus.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/hero-top.md",
+      "target": "document:references/layouts/symmetric.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/hero-top.md",
+      "target": "document:references/layouts/t-shape.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/hero-top.md",
+      "target": "document:references/layouts/three-column.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/hero-top.md",
+      "target": "document:references/layouts/waterfall.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/l-shape.md",
+      "target": "document:references/layouts/mixed-grid.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/l-shape.md",
+      "target": "document:references/layouts/primary-secondary.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/l-shape.md",
+      "target": "document:references/layouts/single-focus.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/l-shape.md",
+      "target": "document:references/layouts/symmetric.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/l-shape.md",
+      "target": "document:references/layouts/t-shape.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/l-shape.md",
+      "target": "document:references/layouts/three-column.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/l-shape.md",
+      "target": "document:references/layouts/waterfall.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/mixed-grid.md",
+      "target": "document:references/layouts/primary-secondary.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/mixed-grid.md",
+      "target": "document:references/layouts/single-focus.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/mixed-grid.md",
+      "target": "document:references/layouts/symmetric.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/mixed-grid.md",
+      "target": "document:references/layouts/t-shape.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/mixed-grid.md",
+      "target": "document:references/layouts/three-column.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/mixed-grid.md",
+      "target": "document:references/layouts/waterfall.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/primary-secondary.md",
+      "target": "document:references/layouts/single-focus.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/primary-secondary.md",
+      "target": "document:references/layouts/symmetric.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/primary-secondary.md",
+      "target": "document:references/layouts/t-shape.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/primary-secondary.md",
+      "target": "document:references/layouts/three-column.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/primary-secondary.md",
+      "target": "document:references/layouts/waterfall.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/single-focus.md",
+      "target": "document:references/layouts/symmetric.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/single-focus.md",
+      "target": "document:references/layouts/t-shape.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/single-focus.md",
+      "target": "document:references/layouts/three-column.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/single-focus.md",
+      "target": "document:references/layouts/waterfall.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/symmetric.md",
+      "target": "document:references/layouts/t-shape.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/symmetric.md",
+      "target": "document:references/layouts/three-column.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/symmetric.md",
+      "target": "document:references/layouts/waterfall.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/t-shape.md",
+      "target": "document:references/layouts/three-column.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/t-shape.md",
+      "target": "document:references/layouts/waterfall.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/layouts/three-column.md",
+      "target": "document:references/layouts/waterfall.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/page-templates/cover.md",
+      "target": "document:references/page-templates/end.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/page-templates/cover.md",
+      "target": "document:references/page-templates/section.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/page-templates/cover.md",
+      "target": "document:references/page-templates/toc.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/page-templates/end.md",
+      "target": "document:references/page-templates/section.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/page-templates/end.md",
+      "target": "document:references/page-templates/toc.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/page-templates/section.md",
+      "target": "document:references/page-templates/toc.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/README.md",
+      "target": "document:references/styles/blue-white.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/README.md",
+      "target": "document:references/styles/dark-tech.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/README.md",
+      "target": "document:references/styles/fresh-green.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/README.md",
+      "target": "document:references/styles/luxury-purple.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/README.md",
+      "target": "document:references/styles/minimal-gray.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/README.md",
+      "target": "document:references/styles/royal-red.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/README.md",
+      "target": "document:references/styles/runtime-style-palette-index.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/README.md",
+      "target": "document:references/styles/runtime-style-rules.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/README.md",
+      "target": "document:references/styles/vibrant-rainbow.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/README.md",
+      "target": "document:references/styles/warm-earth.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/blue-white.md",
+      "target": "document:references/styles/dark-tech.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/blue-white.md",
+      "target": "document:references/styles/fresh-green.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/blue-white.md",
+      "target": "document:references/styles/luxury-purple.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/blue-white.md",
+      "target": "document:references/styles/minimal-gray.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/blue-white.md",
+      "target": "document:references/styles/royal-red.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/blue-white.md",
+      "target": "document:references/styles/runtime-style-palette-index.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/blue-white.md",
+      "target": "document:references/styles/runtime-style-rules.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/blue-white.md",
+      "target": "document:references/styles/vibrant-rainbow.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/blue-white.md",
+      "target": "document:references/styles/warm-earth.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/dark-tech.md",
+      "target": "document:references/styles/fresh-green.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/dark-tech.md",
+      "target": "document:references/styles/luxury-purple.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/dark-tech.md",
+      "target": "document:references/styles/minimal-gray.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/dark-tech.md",
+      "target": "document:references/styles/royal-red.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/dark-tech.md",
+      "target": "document:references/styles/runtime-style-palette-index.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/dark-tech.md",
+      "target": "document:references/styles/runtime-style-rules.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/dark-tech.md",
+      "target": "document:references/styles/vibrant-rainbow.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/dark-tech.md",
+      "target": "document:references/styles/warm-earth.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/fresh-green.md",
+      "target": "document:references/styles/luxury-purple.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/fresh-green.md",
+      "target": "document:references/styles/minimal-gray.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/fresh-green.md",
+      "target": "document:references/styles/royal-red.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/fresh-green.md",
+      "target": "document:references/styles/runtime-style-palette-index.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/fresh-green.md",
+      "target": "document:references/styles/runtime-style-rules.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/fresh-green.md",
+      "target": "document:references/styles/vibrant-rainbow.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/fresh-green.md",
+      "target": "document:references/styles/warm-earth.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/luxury-purple.md",
+      "target": "document:references/styles/minimal-gray.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/luxury-purple.md",
+      "target": "document:references/styles/royal-red.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/luxury-purple.md",
+      "target": "document:references/styles/runtime-style-palette-index.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/luxury-purple.md",
+      "target": "document:references/styles/runtime-style-rules.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/luxury-purple.md",
+      "target": "document:references/styles/vibrant-rainbow.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/luxury-purple.md",
+      "target": "document:references/styles/warm-earth.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/minimal-gray.md",
+      "target": "document:references/styles/royal-red.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/minimal-gray.md",
+      "target": "document:references/styles/runtime-style-palette-index.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/minimal-gray.md",
+      "target": "document:references/styles/runtime-style-rules.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/minimal-gray.md",
+      "target": "document:references/styles/vibrant-rainbow.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/minimal-gray.md",
+      "target": "document:references/styles/warm-earth.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/royal-red.md",
+      "target": "document:references/styles/runtime-style-palette-index.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/royal-red.md",
+      "target": "document:references/styles/runtime-style-rules.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/royal-red.md",
+      "target": "document:references/styles/vibrant-rainbow.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/royal-red.md",
+      "target": "document:references/styles/warm-earth.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/runtime-style-palette-index.md",
+      "target": "document:references/styles/runtime-style-rules.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/runtime-style-palette-index.md",
+      "target": "document:references/styles/vibrant-rainbow.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/runtime-style-palette-index.md",
+      "target": "document:references/styles/warm-earth.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/runtime-style-rules.md",
+      "target": "document:references/styles/vibrant-rainbow.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/runtime-style-rules.md",
+      "target": "document:references/styles/warm-earth.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/styles/vibrant-rainbow.md",
+      "target": "document:references/styles/warm-earth.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/cli-cheatsheet.md",
+      "target": "document:references/prompts/tpl-interview.md",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/cli-cheatsheet.md",
+      "target": "document:references/prompts/tpl-interview-structured-ui.md",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/cli-cheatsheet.md",
+      "target": "document:references/prompts/tpl-interview-text-fallback.md",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/cli-cheatsheet.md",
+      "target": "document:references/prompts/tpl-research-synth-orchestrator.md",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/cli-cheatsheet.md",
+      "target": "document:references/prompts/tpl-source-synth-orchestrator.md",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/cli-cheatsheet.md",
+      "target": "document:references/prompts/tpl-outline-orchestrator.md",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/cli-cheatsheet.md",
+      "target": "document:references/prompts/tpl-style-orchestrator.md",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/cli-cheatsheet.md",
+      "target": "document:references/prompts/step4/tpl-page-orchestrator.md",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/cli-cheatsheet.md",
+      "target": "document:references/prompts/step4/tpl-page-planning.md",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/cli-cheatsheet.md",
+      "target": "document:references/prompts/step4/tpl-page-html.md",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/cli-cheatsheet.md",
+      "target": "document:references/prompts/step4/tpl-page-review.md",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/cli-cheatsheet.md",
+      "target": "document:references/prompts/step4/tpl-page-audit-request.md",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/cli-cheatsheet.md",
+      "target": "document:references/prompts/step4/tpl-page-breakpoint-orchestrator.md",
+      "type": "documents",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/tpl-interview-structured-ui.md",
+      "target": "document:references/prompts/module-structured-interview-ui.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/tpl-interview-text-fallback.md",
+      "target": "document:references/prompts/module-text-interview-fallback.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/tpl-interview-structured-ui.md",
+      "target": "document:references/prompts/tpl-interview.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/tpl-interview-text-fallback.md",
+      "target": "document:references/prompts/tpl-interview.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/tpl-outline-orchestrator.md",
+      "target": "document:references/prompts/tpl-outline-phase1.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/tpl-outline-orchestrator.md",
+      "target": "document:references/prompts/tpl-outline-phase2.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/tpl-outline-phase1.md",
+      "target": "document:references/prompts/tpl-outline-phase2.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/tpl-research-synth-orchestrator.md",
+      "target": "document:references/prompts/tpl-research-synth-phase1.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/tpl-research-synth-orchestrator.md",
+      "target": "document:references/prompts/tpl-research-synth-phase2.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/tpl-research-synth-phase1.md",
+      "target": "document:references/prompts/tpl-research-synth-phase2.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/tpl-source-synth-orchestrator.md",
+      "target": "document:references/prompts/tpl-source-synth-phase1.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/tpl-source-synth-orchestrator.md",
+      "target": "document:references/prompts/tpl-source-synth-phase2.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/tpl-source-synth-phase1.md",
+      "target": "document:references/prompts/tpl-source-synth-phase2.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/tpl-style-orchestrator.md",
+      "target": "document:references/prompts/tpl-style-phase1.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/tpl-style-orchestrator.md",
+      "target": "document:references/prompts/tpl-style-phase2.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/tpl-style-phase1.md",
+      "target": "document:references/prompts/tpl-style-phase2.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/step4/tpl-page-orchestrator.md",
+      "target": "document:references/prompts/step4/tpl-page-planning.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/step4/tpl-page-orchestrator.md",
+      "target": "document:references/prompts/step4/tpl-page-html.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/step4/tpl-page-orchestrator.md",
+      "target": "document:references/prompts/step4/tpl-page-review.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/step4/tpl-page-planning.md",
+      "target": "document:references/prompts/step4/tpl-page-html.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/step4/tpl-page-html.md",
+      "target": "document:references/prompts/step4/tpl-page-review.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/step4/tpl-page-breakpoint-orchestrator.md",
+      "target": "document:references/prompts/step4/tpl-page-planning.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/step4/tpl-page-breakpoint-orchestrator.md",
+      "target": "document:references/prompts/step4/tpl-page-html.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/step4/tpl-page-breakpoint-orchestrator.md",
+      "target": "document:references/prompts/step4/tpl-page-review.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/prompts/step4/tpl-page-audit-request.md",
+      "target": "document:references/prompts/step4/tpl-page-breakpoint-orchestrator.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/playbooks/outline-phase1-playbook.md",
+      "target": "document:references/playbooks/outline-phase2-playbook.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "大纲生成第一阶段与第二阶段自审构成完整流水线",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/playbooks/research-phase1-playbook.md",
+      "target": "document:references/playbooks/research-phase2-playbook.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "研究阶段第一阶段搜索执行与第二阶段数据格式化构成完整研究流程",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/playbooks/source-phase1-playbook.md",
+      "target": "document:references/playbooks/source-phase2-playbook.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "素材处理第一阶段提炼与第二阶段质量自审构成完整素材处理流程",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/playbooks/style-phase1-playbook.md",
+      "target": "document:references/playbooks/style-phase2-playbook.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "风格合同定义第一阶段与第二阶段质量自审构成完整风格锁定流程",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/playbooks/step4/page-planning-playbook.md",
+      "target": "document:references/playbooks/step4/page-html-playbook.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "Step4单页策划稿在前，HTML生成依赖策划结果，二者构成Step4核心两阶段",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/playbooks/step4/page-html-playbook.md",
+      "target": "document:references/playbooks/step4/page-review-playbook.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "HTML生成后进入视觉审查与修复闭环，二者顺序相连",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/playbooks/step4/page-planning-playbook.md",
+      "target": "document:references/playbooks/step4/page-review-playbook.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "策划阶段定义的内容合同是审查阶段对账的依据",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/playbooks/step4/page-html-playbook.md",
+      "target": "document:references/design-runtime/css-weapons.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "HTML生成手册引用CSS武器库中的高级视觉技法",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/playbooks/step4/page-html-playbook.md",
+      "target": "document:references/design-runtime/design-specs.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "HTML生成手册要求严格绑定design-specs中的风格变量与画布规范",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/playbooks/step4/page-planning-playbook.md",
+      "target": "document:references/design-runtime/data-type-visual-mapping.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "策划手册中资源发现与设计决策阶段参考数据类型视觉映射表",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/playbooks/step4/page-planning-playbook.md",
+      "target": "document:references/design-runtime/data-type-decoration-mapping.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "策划手册装饰决策阶段参考数据类型装饰映射表",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/playbooks/step4/page-planning-playbook.md",
+      "target": "document:references/principles/design-principles-cheatsheet.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "策划手册Phase2明确引用principle_refs包括设计原则速查表",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/playbooks/step4/page-review-playbook.md",
+      "target": "document:references/principles/runtime-failure-modes.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "审查手册Part F明确对照Runtime Failure Modes进行内容合同违约检查",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/design-runtime/director-command-rules.md",
+      "target": "document:references/design-runtime/director-command-examples.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "Director Command规则文档与示例库配套，规则指导写法，示例提供具体参考",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/design-runtime/design-specs.md",
+      "target": "document:references/design-runtime/css-weapons.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "设计规格书CSS能力释放章节与CSS武器库同属运行时视觉规范，相互补充",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/design-runtime/data-type-visual-mapping.md",
+      "target": "document:references/design-runtime/data-type-decoration-mapping.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "视觉呈现映射与装饰灵感映射同属数据类型设计决策体系，互为补充",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/principles/README.md",
+      "target": "document:references/principles/cognitive-load.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "原则索引文件列出并导航到认知负荷原则",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/principles/README.md",
+      "target": "document:references/principles/color-psychology.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "原则索引文件列出并导航到色彩心理原则",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/principles/README.md",
+      "target": "document:references/principles/composition.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "原则索引文件列出并导航到构图与留白原则",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/principles/README.md",
+      "target": "document:references/principles/data-visualization.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "原则索引文件列出并导航到数据可视化原则",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/principles/README.md",
+      "target": "document:references/principles/narrative-arc.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "原则索引文件列出并导航到叙事结构原则",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/principles/README.md",
+      "target": "document:references/principles/runtime-failure-modes.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "原则索引文件列出并导航到运行时失败模式",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/principles/README.md",
+      "target": "document:references/principles/visual-hierarchy.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "原则索引文件列出并导航到视觉层级原则",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/principles/README.md",
+      "target": "document:references/principles/design-principles-cheatsheet.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "原则索引文件列出并导航到设计原则速查表",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/principles/design-principles-cheatsheet.md",
+      "target": "document:references/principles/visual-hierarchy.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "速查表整合了CARP原则，与视觉层级原则文件高度相关",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/principles/design-principles-cheatsheet.md",
+      "target": "document:references/principles/cognitive-load.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "速查表原则2对应认知负荷，与该原则文件直接关联",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/principles/design-principles-cheatsheet.md",
+      "target": "document:references/principles/composition.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "速查表原则3对应构图与留白，与该原则文件直接关联",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/principles/design-principles-cheatsheet.md",
+      "target": "document:references/principles/color-psychology.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "速查表原则4对应色彩与装饰克制，与色彩心理原则文件直接关联",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/principles/design-principles-cheatsheet.md",
+      "target": "document:references/principles/data-visualization.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "速查表原则5对应数据表达诚实，与数据可视化原则文件直接关联",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/principles/design-principles-cheatsheet.md",
+      "target": "document:references/principles/narrative-arc.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "速查表原则6对应节奏与变奏，与叙事结构原则文件相关",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/playbooks/outline-phase1-playbook.md",
+      "target": "document:references/principles/narrative-arc.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "大纲生成手册中的叙事角色与page_type映射依赖叙事结构理论",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/playbooks/outline-phase1-playbook.md",
+      "target": "document:references/principles/cognitive-load.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "大纲密度倾向与密度分配规则与认知负荷原则直接对应",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/playbooks/style-phase1-playbook.md",
+      "target": "document:references/principles/color-psychology.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "风格合同生成中的调色盘创作参考色彩心理与60-30-10法则",
+      "direction": "forward"
+    },
+    {
+      "source": "document:references/playbooks/style-phase1-playbook.md",
+      "target": "document:references/design-runtime/design-specs.md",
+      "type": "related",
+      "weight": 0.5,
+      "description": "style-phase1手册生成的style.json合同须符合design-specs中的色彩与CSS规范",
+      "direction": "forward"
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:core-contract",
+      "name": "核心合同层",
+      "description": "定义状态机骨架、Agent 调度协议与整体工作流的顶层合同文档，是整个项目的权威入口",
+      "nodeIds": [
+        "document:README.md",
+        "document:README_EN.md",
+        "document:SKILL.md"
+      ]
+    },
+    {
+      "id": "layer:cli-interface",
+      "name": "CLI 接口层",
+      "description": "面向最终用户的唯一交互界面文档，描述所有可用命令、参数与调用约定",
+      "nodeIds": [
+        "document:references/cli-cheatsheet.md"
+      ]
+    },
+    {
+      "id": "layer:reference-index",
+      "name": "参考索引层",
+      "description": "各目录的 README 索引文档，提供资源导航、目录说明与消费规则",
+      "nodeIds": [
+        "document:references/README.md",
+        "document:scripts/README.md",
+        "document:references/blocks/README.md",
+        "document:references/charts/README.md",
+        "document:references/layouts/README.md",
+        "document:references/styles/README.md",
+        "document:references/principles/README.md"
+      ]
+    },
+    {
+      "id": "layer:script-tools",
+      "name": "脚本工具层",
+      "description": "所有 Python 执行脚本，覆盖合同校验、HTML 渲染导出、PPTX 生成、资源加载、里程碑检测与日志等运行时能力",
+      "nodeIds": [
+        "file:scripts/check_skill.py",
+        "file:scripts/contract_validator.py",
+        "file:scripts/html2png.py",
+        "file:scripts/html2svg.py",
+        "file:scripts/html_packager.py",
+        "file:scripts/milestone_check.py",
+        "file:scripts/planning_validator.py",
+        "file:scripts/png2pptx.py",
+        "file:scripts/prompt_harness.py",
+        "file:scripts/resource_loader.py",
+        "file:scripts/smoke_skill.py",
+        "file:scripts/subagent_logger.py",
+        "file:scripts/svg2pptx.py",
+        "file:scripts/visual_qa.py",
+        "file:scripts/workflow_versions.py"
+      ]
+    },
+    {
+      "id": "layer:prompt-templates",
+      "name": "Prompt 模板层",
+      "description": "驱动各阶段子代理的提示词模板，包括访谈、大纲、研究、风格锁定与逐页 HTML 生成的 orchestrator 和 phase 模板",
+      "nodeIds": [
+        "document:references/prompts/module-structured-interview-ui.md",
+        "document:references/prompts/module-text-interview-fallback.md",
+        "document:references/prompts/step4/tpl-page-audit-request.md",
+        "document:references/prompts/step4/tpl-page-breakpoint-orchestrator.md",
+        "document:references/prompts/step4/tpl-page-html.md",
+        "document:references/prompts/step4/tpl-page-orchestrator.md",
+        "document:references/prompts/step4/tpl-page-planning.md",
+        "document:references/prompts/step4/tpl-page-review.md",
+        "document:references/prompts/tpl-interview-structured-ui.md",
+        "document:references/prompts/tpl-interview-text-fallback.md",
+        "document:references/prompts/tpl-interview.md",
+        "document:references/prompts/tpl-outline-orchestrator.md",
+        "document:references/prompts/tpl-outline-phase1.md",
+        "document:references/prompts/tpl-outline-phase2.md",
+        "document:references/prompts/tpl-research-synth-orchestrator.md",
+        "document:references/prompts/tpl-research-synth-phase1.md",
+        "document:references/prompts/tpl-research-synth-phase2.md",
+        "document:references/prompts/tpl-source-synth-orchestrator.md",
+        "document:references/prompts/tpl-source-synth-phase1.md",
+        "document:references/prompts/tpl-source-synth-phase2.md",
+        "document:references/prompts/tpl-style-orchestrator.md",
+        "document:references/prompts/tpl-style-phase1.md",
+        "document:references/prompts/tpl-style-phase2.md"
+      ]
+    },
+    {
+      "id": "layer:playbook-rules",
+      "name": "Playbook 规则层",
+      "description": "注入到 Prompt 模板中的阶段级执行规则手册，约束子代理在各阶段的行为边界与质量标准",
+      "nodeIds": [
+        "document:references/playbooks/outline-phase1-playbook.md",
+        "document:references/playbooks/outline-phase2-playbook.md",
+        "document:references/playbooks/research-phase1-playbook.md",
+        "document:references/playbooks/research-phase2-playbook.md",
+        "document:references/playbooks/source-phase1-playbook.md",
+        "document:references/playbooks/source-phase2-playbook.md",
+        "document:references/playbooks/step4/page-html-playbook.md",
+        "document:references/playbooks/step4/page-planning-playbook.md",
+        "document:references/playbooks/step4/page-review-playbook.md",
+        "document:references/playbooks/style-phase1-playbook.md",
+        "document:references/playbooks/style-phase2-playbook.md"
+      ]
+    },
+    {
+      "id": "layer:visual-resources",
+      "name": "视觉组件资源层",
+      "description": "页面布局版式、内容区域组件块、数据可视化图表类型、特殊页模板（封面/目录/章节/结尾）与视觉风格预设的参考素材库",
+      "nodeIds": [
+        "document:references/blocks/card-styles.md",
+        "document:references/blocks/comparison.md",
+        "document:references/blocks/diagram.md",
+        "document:references/blocks/image-hero.md",
+        "document:references/blocks/matrix-chart.md",
+        "document:references/blocks/people.md",
+        "document:references/blocks/quote.md",
+        "document:references/blocks/timeline.md",
+        "document:references/charts/comparison-bar.md",
+        "document:references/charts/funnel.md",
+        "document:references/charts/kpi.md",
+        "document:references/charts/metric-row.md",
+        "document:references/charts/progress-bar.md",
+        "document:references/charts/radar.md",
+        "document:references/charts/rating.md",
+        "document:references/charts/ring.md",
+        "document:references/charts/runtime-chart-rules.md",
+        "document:references/charts/sparkline.md",
+        "document:references/charts/stacked-bar.md",
+        "document:references/charts/timeline.md",
+        "document:references/charts/treemap.md",
+        "document:references/charts/waffle.md",
+        "document:references/layouts/asymmetric.md",
+        "document:references/layouts/hero-top.md",
+        "document:references/layouts/l-shape.md",
+        "document:references/layouts/mixed-grid.md",
+        "document:references/layouts/primary-secondary.md",
+        "document:references/layouts/single-focus.md",
+        "document:references/layouts/symmetric.md",
+        "document:references/layouts/t-shape.md",
+        "document:references/layouts/three-column.md",
+        "document:references/layouts/waterfall.md",
+        "document:references/page-templates/cover.md",
+        "document:references/page-templates/end.md",
+        "document:references/page-templates/section.md",
+        "document:references/page-templates/toc.md",
+        "document:references/styles/blue-white.md",
+        "document:references/styles/dark-tech.md",
+        "document:references/styles/fresh-green.md",
+        "document:references/styles/luxury-purple.md",
+        "document:references/styles/minimal-gray.md",
+        "document:references/styles/royal-red.md",
+        "document:references/styles/runtime-style-palette-index.md",
+        "document:references/styles/runtime-style-rules.md",
+        "document:references/styles/vibrant-rainbow.md",
+        "document:references/styles/warm-earth.md"
+      ]
+    },
+    {
+      "id": "layer:design-specs",
+      "name": "设计规范层",
+      "description": "设计原则与运行时渲染规则，包括认知负载、视觉层级、色彩心理学、CSS 技术武器库与 Director 指令规范，约束所有视觉输出的底层质量",
+      "nodeIds": [
+        "document:references/design-runtime/css-weapons.md",
+        "document:references/design-runtime/data-type-decoration-mapping.md",
+        "document:references/design-runtime/data-type-visual-mapping.md",
+        "document:references/design-runtime/design-specs.md",
+        "document:references/design-runtime/director-command-examples.md",
+        "document:references/design-runtime/director-command-rules.md",
+        "document:references/principles/cognitive-load.md",
+        "document:references/principles/color-psychology.md",
+        "document:references/principles/composition.md",
+        "document:references/principles/data-visualization.md",
+        "document:references/principles/design-principles-cheatsheet.md",
+        "document:references/principles/narrative-arc.md",
+        "document:references/principles/runtime-failure-modes.md",
+        "document:references/principles/visual-hierarchy.md"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "id": "step-01-overview",
+      "title": "项目全景：PPT Agent 是什么",
+      "description": "从 README.md 出发，了解 PPT Agent 的核心定位——一个状态机驱动的多代理协作演示文稿自动生成框架。理解它解决了什么问题，以及 7 阶段工作流与产物链的整体结构。",
+      "nodeIds": [
+        "document:README.md"
+      ],
+      "layer": "layer:core-contract",
+      "languageLesson": "PPT Agent 不是单一脚本，而是一个「合同驱动的代理编排系统」。每个阶段的输出物都是下一阶段的输入合同，整条链路通过格式校验串联，而不是靠人工传递。",
+      "order": 0
+    },
+    {
+      "id": "step-02-skill-contract",
+      "title": "核心合同：SKILL.md 状态机定义",
+      "description": "SKILL.md 是整个框架的主控制台，也是最重要的单一文件。它以合同文档的形式定义了状态机骨架（Step 0–5）、Gate 校验规则、Subagent 生命周期管理与跨对话断点恢复协议。每条规则都是可执行的约束，而非建议。",
+      "nodeIds": [
+        "document:SKILL.md"
+      ],
+      "layer": "layer:core-contract",
+      "languageLesson": "「合同式约束」是 PPT Agent 的核心设计哲学：SKILL.md 中的每个 Gate 条件都是一个布尔断言，只有全部为真才能进入下一状态。这使得主 Agent 的行为是可预测的，而不是依赖 LLM 的判断。",
+      "order": 1
+    },
+    {
+      "id": "step-03-prompt-engine",
+      "title": "Prompt 引擎：模板变量注入机制",
+      "description": "prompt_harness.py 是所有 Subagent Prompt 生成的唯一入口。它实现了 {{VAR}} 占位符替换机制，将运行时变量注入 Markdown 模板，输出可直接提交给 Subagent 的完整指令文件。理解这里是理解整个 Prompt 流水线的基础。",
+      "nodeIds": [
+        "file:scripts/prompt_harness.py",
+        "document:references/prompts/tpl-interview.md"
+      ],
+      "layer": "layer:script-tools",
+      "languageLesson": "Prompt 模板与运行时变量完全分离：模板文件是静态的 Markdown，harness 脚本负责注入。这种设计使得修改 Prompt 策略不需要改动任何 Python 代码，模板即配置。",
+      "order": 2
+    },
+    {
+      "id": "step-04-quality-gates",
+      "title": "质量门禁：三层合规性校验",
+      "description": "PPT Agent 的质量保障由三个脚本协同完成：contract_validator.py 验证全链路产物格式合规（从采访到交付清单）；planning_validator.py 是 Step 4 页面规划 JSON 的 Schema 真源；visual_qa.py 基于像素分析对渲染结果做自动化视觉断言。",
+      "nodeIds": [
+        "file:scripts/contract_validator.py",
+        "file:scripts/planning_validator.py",
+        "file:scripts/visual_qa.py"
+      ],
+      "layer": "layer:script-tools",
+      "languageLesson": "质量门禁的三个层次各司其职：合同层（字段合规）→ 规划层（结构约束）→ 视觉层（像素验证）。每层只做自己能机械判断的事，不依赖 LLM 的主观评估，这是「可验证的质量」。",
+      "order": 3
+    },
+    {
+      "id": "step-05-resource-system",
+      "title": "资源系统：动态布局与视觉组件路由",
+      "description": "resource_loader.py 提供三种操作模式：menu（提取资源菜单供 LLM 选择）、resolve（按 planning JSON 字段动态加载资源正文）、images（枚举本地图片资产）。它连接了 Planning 阶段的抽象选择与 HTML 阶段的具体实现，是视觉资源的统一路由器。",
+      "nodeIds": [
+        "file:scripts/resource_loader.py",
+        "document:references/layouts/README.md",
+        "document:references/blocks/README.md",
+        "document:references/charts/README.md"
+      ],
+      "layer": "layer:script-tools",
+      "languageLesson": "资源系统的关键设计是「字段名即路由键」：planning JSON 中的 layout_id、block_ids、chart_type 等字段直接映射到 references/ 目录下的对应文档，LLM 只需选择 ID，harness 负责加载内容。这大幅降低了 Subagent 的上下文负担。",
+      "order": 4
+    },
+    {
+      "id": "step-06-prompt-hierarchy",
+      "title": "Prompt 模板体系：编排器与阶段分离",
+      "description": "每个主要步骤都有独立的编排器（orchestrator）模板负责整体调度，以及 Phase 1/Phase 2 模板负责具体执行。以 Step 4 为例：tpl-page-orchestrator 协调 Planning → HTML → Review 三阶段，每个阶段有独立的指令模板，实现了上下文隔离与渐进式执行。",
+      "nodeIds": [
+        "document:references/prompts/tpl-outline-orchestrator.md",
+        "document:references/prompts/tpl-style-orchestrator.md",
+        "document:references/prompts/step4/tpl-page-orchestrator.md",
+        "document:references/prompts/step4/tpl-page-planning.md",
+        "document:references/prompts/step4/tpl-page-html.md"
+      ],
+      "layer": "layer:prompt-templates",
+      "languageLesson": "「编排器+阶段分离」模式解决了 LLM 长对话的上下文污染问题：orchestrator 只负责协调和传递状态，每个 Phase 模板在独立的 Subagent 中执行，避免了早期信息影响后期判断。这是多代理系统的标准隔离模式。",
+      "order": 5
+    },
+    {
+      "id": "step-07-playbook-injection",
+      "title": "Playbook 注入：阶段级执行规则手册",
+      "description": "Playbook 是注入到 Prompt 模板中的执行规则手册，为每个阶段提供精细化的行为约束。page-planning-playbook 以 9 个 Phase 规定了规划稿的结构合同；page-html-playbook 以 8 个 Phase 规定了 HTML 生成的物理红线；style-phase1-playbook 规定了调色盘创作的强制红线。",
+      "nodeIds": [
+        "document:references/playbooks/step4/page-planning-playbook.md",
+        "document:references/playbooks/step4/page-html-playbook.md",
+        "document:references/playbooks/style-phase1-playbook.md"
+      ],
+      "layer": "layer:playbook-rules",
+      "languageLesson": "Playbook 将「什么不能做」（红线）和「什么必须做」（门禁）从 Prompt 主体中抽离，形成可独立维护的规则文档。当某类问题反复出现时，只需更新对应 Playbook，无需修改 orchestrator 的整体逻辑。这是「规则即文档」的实践。",
+      "order": 6
+    },
+    {
+      "id": "step-08-style-system",
+      "title": "风格系统：从预设到运行时规则",
+      "description": "风格系统由三个层次组成：预设文件（blue-white、dark-tech 等 9 个风格方案）提供具体参数；runtime-style-palette-index 是运行时调色盘选择索引；runtime-style-rules 是 HTML 生成阶段必须遵守的风格绑定规则。三层共同保证视觉一致性。",
+      "nodeIds": [
+        "document:references/styles/README.md",
+        "document:references/styles/runtime-style-palette-index.md",
+        "document:references/styles/runtime-style-rules.md"
+      ],
+      "layer": "layer:visual-resources",
+      "languageLesson": "风格系统的核心是「合同化的 CSS 变量」：style.json 中锁定的 css_variables 字段在 HTML 生成时被强制绑定，Subagent 不能自行发明颜色值。这将视觉一致性从「LLM 的审美判断」提升为「可校验的字段约束」。",
+      "order": 7
+    },
+    {
+      "id": "step-09-page-pipeline",
+      "title": "页面生产流水线：Planning → HTML → Review",
+      "description": "Step 4 是整个框架的核心生产环节。tpl-page-orchestrator 依次调度三个 Subagent：Planning（页面骨架 + 资源选择）→ HTML（完整设计稿生产）→ Review（视觉 QA + 修复循环）。tpl-page-review 实现了严格的 P0/P1/P2 缺陷分级与 visual_qa.py 强制调用规则。",
+      "nodeIds": [
+        "document:references/prompts/step4/tpl-page-orchestrator.md",
+        "document:references/prompts/step4/tpl-page-review.md",
+        "document:references/playbooks/step4/page-review-playbook.md"
+      ],
+      "layer": "layer:prompt-templates",
+      "languageLesson": "Review 阶段的「修复循环」是关键设计：它不是一次性检查，而是「截图 → 分析 → 修复 → 再截图」的迭代循环，直到所有 P0 缺陷清零。这将视觉质量从「尽力而为」变成了「可终止的收敛过程」。",
+      "order": 8
+    },
+    {
+      "id": "step-10-export-pipeline",
+      "title": "导出流水线：HTML → PNG/SVG → PPTX",
+      "description": "最终交付由四个脚本协作完成：html2png.py 用 Puppeteer 渲染 2560×1440 像素截图；html2svg.py 生成矢量版本；png2pptx.py 将 PNG 嵌入 16:9 幻灯片（光栅 PPTX）；svg2pptx.py 将 SVG 解析为原生 OOXML 形状（可编辑 PPTX）；html_packager.py 额外生成单文件可翻页预览。",
+      "nodeIds": [
+        "file:scripts/html2png.py",
+        "file:scripts/svg2pptx.py",
+        "file:scripts/png2pptx.py",
+        "file:scripts/html_packager.py"
+      ],
+      "layer": "layer:script-tools",
+      "languageLesson": "双引擎导出策略（PNG 光栅 vs SVG 矢量）满足了不同的下游需求：光栅 PPTX 跨平台兼容性最好，矢量 PPTX 保留字体可编辑性，而 HTML 预览包则让审稿无需安装 Office。三种交付物由同一套 HTML 源文件派生，单一真源原则贯穿始终。",
+      "order": 9
+    },
+    {
+      "id": "step-11-fault-recovery",
+      "title": "容错恢复：里程碑检查与断点审计",
+      "description": "milestone_check.py 按 P0–P5 阶段检查产物文件是否存在并通过 validator，是跨对话断点恢复的快速侦查工具。subagent_logger.py 将 PageAgent 的每个阶段命令追加写入运行日志，支持断点审计与回放。两者共同实现了「长会话中断后可续跑」的能力。",
+      "nodeIds": [
+        "file:scripts/milestone_check.py",
+        "file:scripts/subagent_logger.py"
+      ],
+      "layer": "layer:script-tools",
+      "languageLesson": "断点恢复的核心假设是「每个阶段的产物文件即状态快照」：只要文件存在且格式合规，就可以跳过该阶段重新推进。这避免了在新对话中从头生成，大幅降低了长流程 LLM 调用成本。",
+      "order": 10
+    },
+    {
+      "id": "step-12-cli-panorama",
+      "title": "CLI 全景：操作速查表",
+      "description": "cli-cheatsheet.md 是整个框架的外部接口文档，覆盖从 Step 0 采访到 Step 5 导出的每个步骤的 CLI 命令、断点审计流程、资源路由用法和里程碑验收检查清单。它是度数最高的文档节点（出度 13），是快速上手和日常操作的唯一参考。",
+      "nodeIds": [
+        "document:references/cli-cheatsheet.md"
+      ],
+      "layer": "layer:cli-interface",
+      "languageLesson": "速查表是框架复杂度的「外部界面压缩」：用户无需理解内部状态机，只需按步骤执行对应命令。所有内部复杂性（Gate 校验、资源路由、Prompt 注入）都被封装在 CLI 命令背后，这是「复杂系统对用户友好」的典型实践。",
+      "order": 11
+    }
+  ]
+}
