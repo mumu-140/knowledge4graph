@@ -45,12 +45,15 @@ python3 scripts/import-project.py <project-id> <project-source-root> [options]
 python3 scripts/pre-commit-check.py --fix
 ```
 
-脚本自动执行三项检查：
+脚本辅助执行三项检查：
 1. **sourceRoot 清理** — 移除 index.json 中的本地路径（`--fix` 自动修复）
 2. **敏感文件扫描** — 检测 .env、密钥、凭据等文件，发现则阻断
 3. **体积报告** — 单项目 > 50MB 或总计 > 200MB 时警告
 
-如脚本报 `❌ BLOCKED`，必须先处理再继续。
+**脚本通过不代表安全。** AI 必须亲自审查以下内容，脚本只是辅助手段：
+- 读取 `index.json` 确认无本地路径、无敏感信息泄露
+- 检查 `git diff --cached` 确认变更范围符合预期
+- 审视新增文件列表，判断是否有不应提交的内容（脚本的模式匹配总会遗漏）
 
 ### Step 3 — 本地构建验证
 
